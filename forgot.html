@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form onsubmit="resetPass(event)">
+  <input id="email" placeholder="Email" required>
+  <button>Send Reset Link</button>
+  <p id="msg"></p>
+</form>
+
+<script type="module">
+import { auth, sendPasswordResetEmail } from "./firebase.js";
+
+window.resetPass = async e => {
+  e.preventDefault();
+  try {
+    await sendPasswordResetEmail(auth, email.value);
+    msg.innerText = "Reset email sent!";
+    msg.style.color = "green";
+  } catch (err) {
+    msg.innerText = err.message;
+    msg.style.color = "red";
+  }
+};
+</script>
+
+</body>
+</html>

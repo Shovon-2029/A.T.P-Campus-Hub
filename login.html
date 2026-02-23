@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.T.P Hub | Secure Login</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+:root {
+    --primary: #0062ff;
+    --primary-dark: #004ad9;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 20px 25px -5px rgba(0,98,255,.12),
+              0 10px 10px -5px rgba(0,98,255,.06);
+}
+
+*{box-sizing:border-box;font-family:'Inter',sans-serif}
+
+body{
+    background:var(--bg);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    background-image:radial-gradient(#cbd5e1 .5px,transparent .5px);
+    background-size:24px 24px;
+}
+
+nav{
+    padding:24px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.nav-logo{
+    display:flex;
+    gap:10px;
+    font-size:1.4rem;
+    font-weight:800;
+    color:var(--text-main);
+    text-decoration:none;
+}
+
+.nav-logo span{color:var(--primary)}
+
+.login-container{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:24px;
+}
+
+.login-card{
+    width:100%;
+    max-width:440px;
+    padding:48px;
+    background:var(--card-bg);
+    border-radius:32px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+}
+
+/* Toggle */
+.auth-toggle{
+    display:flex;
+    background:#f1f5f9;
+    padding:6px;
+    border-radius:14px;
+    margin-bottom:32px;
+    position:relative;
+}
+
+.toggle-btn{
+    flex:1;
+    text-align:center;
+    padding:10px;
+    font-weight:700;
+    font-size:.85rem;
+    color:var(--text-muted);
+    cursor:pointer;
+    z-index:1;
+}
+
+.toggle-btn.active{color:#fff}
+
+.toggle-slider{
+    position:absolute;
+    inset:6px;
+    width:50%;
+    background:var(--primary);
+    border-radius:10px;
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 4px 12px rgba(0,98,255,.3);
+}
+
+/* Inputs */
+.input-group{margin-bottom:20px}
+
+label{
+    font-size:.75rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--text-muted);
+    margin-bottom:8px;
+    display:block;
+}
+
+.input-wrapper{
+    position:relative;
+}
+
+.input-wrapper i{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--text-muted);
+}
+
+.input-wrapper input{
+    width:100%;
+    padding:14px 16px 14px 48px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#f8fafc;
+    font-weight:500;
+}
+
+.input-wrapper:focus-within i{color:var(--primary)}
+
+.input-wrapper input:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(0,98,255,.12);
+}
+
+/* Buttons */
+.btn-submit{
+    width:100%;
+    padding:16px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:1rem;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+
+.btn-submit:hover{
+    background:var(--primary-dark);
+    transform:translateY(-2px);
+}
+
+.btn-google{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:24px;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#fff;
+    font-weight:600;
+}
+
+#statusMsg{
+    margin-top:1rem;
+    text-align:center;
+    font-weight:600;
+    font-size:.875rem;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a class="nav-logo" href="#">
+        <i class="fas fa-shield-halved text-blue-600"></i>
+        A.T.P <span>HUB</span>
+    </a>
+</nav>
+
+<main class="login-container">
+<div class="login-card">
+
+<div class="text-center mb-10">
+    <h1 class="text-3xl font-extrabold mb-2">Welcome Back</h1>
+    <p class="text-slate-500 font-medium">Enter your credentials</p>
+</div>
+
+<div class="auth-toggle">
+    <div id="slider" class="toggle-slider"></div>
+    <div class="toggle-btn active" id="studentBtn">Student</div>
+    <div class="toggle-btn" id="adminBtn">Institution</div>
+</div>
+
+<form id="loginForm">
+    <div class="input-group">
+        <label id="idLabel">Institutional ID</label>
+        <div class="input-wrapper">
+            <i class="fas fa-user"></i>
+            <input id="username" required placeholder="Roll number or email">
+        </div>
+    </div>
+
+    <div class="input-group">
+        <div class="flex justify-between items-center mb-2">
+            <label>Password</label>
+            <a href="forgot.html" class="text-xs font-bold text-blue-600">Forgot?</a>
+        </div>
+        <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input id="password" type="password" required placeholder="••••••••">
+        </div>
+    </div>
+
+    <button class="btn-submit">Enter the Hub</button>
+    <p id="statusMsg" class="hidden"></p>
+</form>
+
+<p class="mt-6 text-center text-sm text-slate-500">
+    New here?
+    <a href="register.html" class="font-bold text-blue-600">Create an account</a>
+</p>
+
+<div class="relative my-8">
+    <div class="absolute inset-0 flex items-center"><div class="w-full border-t"></div></div>
+    <div class="relative bg-white px-4 text-xs font-bold uppercase text-slate-400 w-fit mx-auto">
+        Single Sign-On
+    </div>
+</div>
+
+<button class="btn-google" id="googleLoginBtn">
+    <img src="https://www.svgrepo.com/show/355037/google.svg" width="20">
+    Continue with Google
+</button>
+
+</div>
+</main>
+
+<footer class="text-center text-sm text-slate-500 p-8">
+© 2026 Algorithm Avengers
+</footer>
+
+<!-- Toggle logic -->
+<script>
+let currentRole = 'student';
+const slider = document.getElementById('slider');
+const studentBtn = document.getElementById('studentBtn');
+const adminBtn = document.getElementById('adminBtn');
+const idLabel = document.getElementById('idLabel');
+
+function setRole(role){
+    currentRole = role;
+    slider.style.transform = role === 'admin' ? 'translateX(100%)' : 'translateX(0)';
+    studentBtn.classList.toggle('active', role === 'student');
+    adminBtn.classList.toggle('active', role === 'admin');
+    idLabel.textContent = role === 'admin' ? 'Institution Code' : 'Institutional ID';
+}
+
+studentBtn.onclick = () => setRole('student');
+adminBtn.onclick = () => setRole('admin');
+</script>
+
+<!-- Firebase-safe auth -->
+<script type="module">
+import { auth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "./firebase.js";
+
+const form = document.getElementById('loginForm');
+const msg = document.getElementById('statusMsg');
+
+form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    msg.classList.remove('hidden');
+    msg.textContent = 'Authenticating...';
+    msg.className = 'text-blue-600 text-center mt-4 font-bold';
+
+    try{
+        await signInWithEmailAndPassword(auth, username.value, password.value);
+        msg.textContent = 'Login successful!';
+        msg.className = 'text-green-600 text-center mt-4 font-bold';
+        setTimeout(()=>location.href = currentRole === 'admin' ? 'admin-dashboard.html' : 'dashboard.html',1000);
+    }catch(err){
+        msg.textContent = err.message;
+        msg.className = 'text-red-600 text-center mt-4 font-bold';
+    }
+});
+
+document.getElementById('googleLoginBtn').onclick = async ()=>{
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    location.href = 'dashboard.html';
+};
+</script>
+
+</body>
+</html>

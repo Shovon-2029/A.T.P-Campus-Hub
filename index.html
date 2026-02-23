@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.T.P Campus Hub | Algorithm Avengers</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --primary: #0066FF;
+            --primary-light: #3385ff;
+            --secondary: #f8fdfd;
+            --bg: #f5f7f8;
+            --text: #1a2736;
+            --text-secondary: #19333c;
+            --card: #FFFFFF;
+            --border: #E2E8F0;
+            --shadow-xl: 0 20px 40px rgba(0, 102, 255, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #d8edfb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .loader-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: rgb(249, 1, 1);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        /* --- ANIMATION STATES --- */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- UI COMPONENTS --- */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; display: flex;
+            justify-content: space-between; align-items: center; padding: 16px 5%;
+            backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid var(--border); z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem; font-weight: 800; text-decoration: none; 
+            display: flex; align-items: center; gap: 8px; color: rgb(249, 1, 1);
+        }
+
+        /* Hero Section Structure */
+        .hero {
+            display: flex; align-items: center; min-height: 100vh;
+            padding: 120px 5% 80px; gap: 60px; position: relative;
+        }
+
+        .hero-content { flex: 1.2; z-index: 1; }
+        .hero-image { flex: 0.8; text-align: center; }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800;
+            line-height: 1.1; margin-bottom: 24px; color: var(--text);
+        }
+
+        .tagline { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 40px; line-height: 1.6; }
+
+        .btn-primary {
+            background: var(--primary); color: white; padding: 14px 32px;
+            border-radius: 12px; font-weight: 600; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px; transition: var(--transition);
+        }
+
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); }
+
+        .cursor { display: inline-block; width: 3px; background-color: var(--primary); margin-left: 5px; animation: blink 0.7s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Feature Section */
+        section { padding: 100px 5%; }
+        .section-title { 
+            font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; text-align: center; 
+            margin-bottom: 60px; color: var(--text); 
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white; padding: 45px; border-radius: 24px;
+            border: 1px solid var(--border); transition: var(--transition);
+        }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: var(--shadow-xl); }
+        .feature-icon { 
+            font-size: 2rem; color: var(--primary); margin-bottom: 25px;
+            background: #eef5ff; width: 64px; height: 64px; 
+            display: flex; align-items: center; justify-content: center; border-radius: 16px;
+        }
+
+        /* About Section */
+        .about-container {
+            display: flex; align-items: center; gap: 80px;
+            background: white; border-radius: 32px; padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .about-text { flex: 1; }
+        .about-image { 
+            flex: 1; height: 450px; background: #e2e8f0; 
+            border-radius: 24px; overflow: hidden; position: relative;
+        }
+
+        /* FAQ Section */
+        .faq-container { max-width: 850px; margin: 0 auto; }
+        .faq-item { 
+            background: white; margin-bottom: 16px; border-radius: 16px; 
+            border: 1px solid var(--border); overflow: hidden; transition: var(--transition);
+        }
+        .faq-header { 
+            padding: 24px; cursor: pointer; display: flex; 
+            justify-content: space-between; align-items: center; font-weight: 700;
+        }
+        .faq-content { padding: 0 24px; max-height: 0; overflow: hidden; transition: all 0.4s ease; color: #64748b; line-height: 1.6; }
+        .faq-item.active .faq-content { padding-bottom: 24px; max-height: 300px; }
+        .faq-item.active { border-color: var(--primary); }
+        .faq-item.active i { transform: rotate(180deg); color: var(--primary); }
+
+        @media (max-width: 1024px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 160px; gap: 40px; }
+            .hero-content { flex: none; }
+            .about-container { flex-direction: column-reverse; padding: 40px 24px; gap: 40px; }
+            .about-image { height: 300px; width: 100%; }
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    </style>
+</head>
+<body style="overflow: hidden;">
+
+    <div id="preloader">
+        <div class="loader-logo">A.T.P <span style="color: #0066FF;">Campus Hub</span></div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo">A.T.P <span style="color: #0066FF;">Campus Hub</span></a>
+        <div class="hidden md:flex space-x-8 font-medium">
+            <a href="#about-us" class="hover:text-blue-600 transition">About Us</a>
+            <a href="#features" class="hover:text-blue-600 transition">Features</a>
+            <a href="#faq" class="hover:text-blue-600 transition">FAQ</a>
+            <a href="login.html" class="text-blue-600 font-bold px-4 py-2 border-2 border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">Login</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="reveal-item">Break the Silence.</h1>
+            <div class="reveal-item" style="height: 40px; margin-bottom: 20px;">
+                <span id="typewriter" class="text-2xl font-bold text-teal-600"></span><span class="cursor">|</span>
+            </div>
+            <p class="tagline reveal-item">
+                When no one listens, Campus-Care ensures your voice is heard safely and anonymously. 
+                Empowering students to report issues without fear.
+            </p>
+            <div class="reveal-item">
+                <a href="#features" class="btn-primary">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+            </div>
+        </div>
+        
+        <div class="hero-image reveal-item">
+            <img src="Campus-Care logo.png" alt="Campus Care" 
+                 style="width: 100%; max-width: 450px; border-radius: 20px; animation: float 6s ease-in-out infinite;">
+        </div>
+    </section>
+
+    <section id="features">
+        <h2 class="section-title">Why Choose A.T.P?</h2>
+        <div class="features-grid">
+            <div class="feature-card reveal-item">
+                <div class="feature-icon"><i class="fas fa-user-secret"></i></div>
+                <h3 class="text-xl font-bold mb-3">Total Anonymity</h3>
+                <p class="text-gray-600">Your reports are scrubbed of metadata. Not even our admins know who you are.</p>
+            </div>
+            <div class="feature-card reveal-item">
+                <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3 class="text-xl font-bold mb-3">Encrypted Path</h3>
+                <p class="text-gray-600">End-to-end encryption ensures your data stays between you and the resolver.</p>
+            </div>
+            <div class="feature-card reveal-item">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3 class="text-xl font-bold mb-3">Real-time Action</h3>
+                <p class="text-gray-600">Direct routing to university authorities for faster grievance resolution.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-us" class="bg-slate-100">
+        <div class="about-container reveal-item">
+            <div class="about-text">
+                <span class="text-blue-600 font-bold uppercase tracking-widest text-sm">Our Mission & Vision</span>
+                <h2 class="text-4xl font-extrabold my-6">Algorithm Avengers at Work</h2>
+                <p class="text-gray-600 mb-8 leading-relaxed">
+                    We are a team of developers dedicated to leveraging technology for social safety. A.T.P Campus Hub was designed to bridge the gap between students and management, ensuring that "fear of retaliation" never stops justice from being served.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3 font-semibold"><i class="fas fa-check-circle text-green-500"></i> Open Source Heart</li>
+                    <li class="flex items-center gap-3 font-semibold"><i class="fas fa-check-circle text-green-500"></i> Student-First Approach</li>
+                    <li class="flex items-center gap-3 font-semibold"><i class="fas fa-check-circle text-green-500"></i> Challenges are new way of innovation</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" 
+                     alt="Team Working" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-title">Common Queries</h2>
+        <div class="faq-container">
+            <div class="faq-item reveal-item">
+                <div class="faq-header">How do I track my report? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Upon submission, you receive a unique 12-digit ticket hash. Use this in the "Track" tab to see status updates without logging in.</div>
+            </div>
+            <div class="faq-item reveal-item">
+                <div class="faq-header">Can the college trace my IP? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">No. We act as a proxy layer. The data the college receives is strictly the content of your report, nothing more.</div>
+            </div>
+            <div class="faq-item reveal-item">
+                <div class="faq-header">What issues can I report? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Anything from infrastructure damage and harassment to academic grievances and safety hazards.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center border-t border-gray-200">
+        <p class="text-gray-500 font-medium">© 2026 Algorithm Avengers. Protecting the Campus Voice.</p>
+    </footer>
+
+    <script>
+        // 1. Initial Launch Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const body = document.body;
+
+            setTimeout(() => {
+                preloader.style.transform = 'translateY(-100%)';
+                body.style.overflow = 'auto'; 
+
+                // Reveal Hero specifically
+                const heroReveals = document.querySelectorAll('.hero .reveal-item');
+                heroReveals.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('active');
+                    }, index * 200);
+                });
+
+                setTimeout(startTypewriter, 1000);
+            }, 1500);
+        });
+
+        // 2. Typewriter Effect Logic
+        const textElement = document.getElementById('typewriter');
+        const messages = ["Your Identity, Protected.", "Your Voice, Amplified.", "Safe Campus, Better Future."];
+        let msgIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+
+        function startTypewriter() {
+            const currentMsg = messages[msgIdx];
+            
+            if (isDeleting) {
+                textElement.innerText = currentMsg.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                textElement.innerText = currentMsg.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIdx === currentMsg.length) {
+                typeSpeed = 2000; 
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                msgIdx = (msgIdx + 1) % messages.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(startTypewriter, typeSpeed);
+        }
+
+        // 3. Scroll Reveal Logic
+        const observerOptions = { threshold: 0.15 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+
+        // 4. FAQ Toggle Logic
+        document.querySelectorAll('.faq-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                // Close other items if one is opened
+                document.querySelectorAll('.faq-item').forEach(other => {
+                    if (other !== item) other.classList.remove('active');
+                });
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

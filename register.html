@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Create Account</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<form onsubmit="register(event)">
+  <input id="email" placeholder="Email" required>
+  <input id="password" type="password" placeholder="Password" required>
+
+  <select id="role">
+    <option value="student">Student</option>
+    <option value="admin">Institution</option>
+  </select>
+
+  <button>Create Account</button>
+  <p id="msg"></p>
+</form>
+
+<script type="module">
+import {
+  auth,
+  db,
+  createUserWithEmailAndPassword,
+  doc,
+  setDoc
+} from "./firebase.js";
+
+window.register = async e => {
+  e.preventDefault();
+  try {
+    const userCred = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+
+    await setDoc(doc(db, "users", userCred.user.uid), {
+      role: role.value
+    });
+
+    msg.innerText = "Account created!";
+    msg.style.color = "green";
+  } catch (err) {
+    msg.innerText = err.message;
+    msg.style.color = "red";
+  }
+};
+</script>
+</body>
+</html>
