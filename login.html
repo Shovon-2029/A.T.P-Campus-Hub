@@ -1,314 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A.T.P Hub | Secure Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATP Campus Hub</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+        }
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-<style>
-:root {
-    --primary: #0062ff;
-    --primary-dark: #004ad9;
-    --bg: #f8fafc;
-    --card-bg: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --shadow: 0 20px 25px -5px rgba(0,98,255,.12),
-              0 10px 10px -5px rgba(0,98,255,.06);
-}
+        /* --- Header & Tabs --- */
+        header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-*{box-sizing:border-box;font-family:'Inter',sans-serif}
+        .menu-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 15px;
+        }
 
-body{
-    background:var(--bg);
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    background-image:radial-gradient(#cbd5e1 .5px,transparent .5px);
-    background-size:24px 24px;
-}
+        nav {
+            background: #ecf0f1;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
 
-nav{
-    padding:24px 5%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+        nav span {
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 5px 10px;
+        }
 
-.nav-logo{
-    display:flex;
-    gap:10px;
-    font-size:1.4rem;
-    font-weight:800;
-    color:var(--text-main);
-    text-decoration:none;
-}
+        /* --- Main Content --- */
+        main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
 
-.nav-logo span{color:var(--primary)}
+        .welcome-msg {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-.login-container{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:24px;
-}
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
 
-.login-card{
-    width:100%;
-    max-width:440px;
-    padding:48px;
-    background:var(--card-bg);
-    border-radius:32px;
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-}
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #eee;
+            padding: 15px;
+            text-align: center;
+        }
 
-/* Toggle */
-.auth-toggle{
-    display:flex;
-    background:#f1f5f9;
-    padding:6px;
-    border-radius:14px;
-    margin-bottom:32px;
-    position:relative;
-}
+        .schedule-table th {
+            background: #f8f9fa;
+        }
 
-.toggle-btn{
-    flex:1;
-    text-align:center;
-    padding:10px;
-    font-weight:700;
-    font-size:.85rem;
-    color:var(--text-muted);
-    cursor:pointer;
-    z-index:1;
-}
+        .info-card {
+            background: var(--white);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--accent);
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
 
-.toggle-btn.active{color:#fff}
+        /* --- Sidebar Menu --- */
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            z-index: 100;
+            padding: 20px;
+        }
 
-.toggle-slider{
-    position:absolute;
-    inset:6px;
-    width:50%;
-    background:var(--primary);
-    border-radius:10px;
-    transition:transform .3s cubic-bezier(.4,0,.2,1);
-    box-shadow:0 4px 12px rgba(0,98,255,.3);
-}
+        .sidebar.active { left: 0; }
 
-/* Inputs */
-.input-group{margin-bottom:20px}
+        .sidebar h3 { color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-label{
-    font-size:.75rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.05em;
-    color:var(--text-muted);
-    margin-bottom:8px;
-    display:block;
-}
+        .sidebar-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f9f9f9;
+            cursor: pointer;
+            display: block;
+            color: #555;
+            text-decoration: none;
+        }
 
-.input-wrapper{
-    position:relative;
-}
+        .sidebar-item:hover { color: var(--accent); }
 
-.input-wrapper i{
-    position:absolute;
-    left:16px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--text-muted);
-}
+        .sub-item { padding-left: 20px; font-size: 0.9rem; }
 
-.input-wrapper input{
-    width:100%;
-    padding:14px 16px 14px 48px;
-    border-radius:12px;
-    border:1px solid var(--border);
-    background:#f8fafc;
-    font-weight:500;
-}
+        /* --- AI Chat Box --- */
+        .ai-trigger {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
 
-.input-wrapper:focus-within i{color:var(--primary)}
+        .chat-box {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            width: 280px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-.input-wrapper input:focus{
-    outline:none;
-    border-color:var(--primary);
-    background:#fff;
-    box-shadow:0 0 0 4px rgba(0,98,255,.12);
-}
+        .chat-header { background: var(--accent); color: white; padding: 10px; font-size: 0.9rem; }
 
-/* Buttons */
-.btn-submit{
-    width:100%;
-    padding:16px;
-    border-radius:12px;
-    font-weight:700;
-    font-size:1rem;
-    background:var(--primary);
-    color:#fff;
-    border:none;
-    cursor:pointer;
-}
+        .chat-body { padding: 15px; max-height: 300px; overflow-y: auto; }
 
-.btn-submit:hover{
-    background:var(--primary-dark);
-    transform:translateY(-2px);
-}
+        .chat-hint {
+            background: #f0f7ff;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
 
-.btn-google{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    margin-top:24px;
-    padding:14px;
-    border-radius:12px;
-    border:1px solid var(--border);
-    background:#fff;
-    font-weight:600;
-}
+        .chat-input-area { display: flex; border-top: 1px solid #eee; }
 
-#statusMsg{
-    margin-top:1rem;
-    text-align:center;
-    font-weight:600;
-    font-size:.875rem;
-}
+        .chat-input-area input { flex: 1; border: none; padding: 10px; outline: none; }
 
-.hidden{display:none}
-</style>
+        .chat-input-area button { background: none; border: none; color: var(--accent); padding: 10px; cursor: pointer; }
+
+    </style>
 </head>
-
 <body>
 
-<nav>
-    <a class="nav-logo" href="#">
-        <i class="fas fa-shield-halved text-blue-600"></i>
-        A.T.P <span>HUB</span>
-    </a>
-</nav>
+    <header>
+        <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+        <div style="font-weight: bold; font-size: 1.2rem;">ATP Campus Hub</div>
+    </header>
 
-<main class="login-container">
-<div class="login-card">
+    <nav>
+        <span>Schedule</span>
+        <span>Announcement</span>
+        <span>Event</span>
+    </nav>
 
-<div class="text-center mb-10">
-    <h1 class="text-3xl font-extrabold mb-2">Welcome Back</h1>
-    <p class="text-slate-500 font-medium">Enter your credentials</p>
-</div>
+    <main>
+        <div class="welcome-msg">Welcome Dear Student;</div>
 
-<div class="auth-toggle">
-    <div id="slider" class="toggle-slider"></div>
-    <div class="toggle-btn active" id="studentBtn">Student</div>
-    <div class="toggle-btn" id="adminBtn">Institution</div>
-</div>
+        <table class="schedule-table">
+            <thead>
+                <tr><th colspan="4">Schedule</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            </tbody>
+        </table>
 
-<form id="loginForm">
-    <div class="input-group">
-        <label id="idLabel">Institutional ID</label>
-        <div class="input-wrapper">
-            <i class="fas fa-user"></i>
-            <input id="username" required placeholder="Roll number or email">
+        <div class="info-card"><strong>Announcement (#)</strong></div>
+        <div class="info-card"><strong>Event (#)</strong></div>
+    </main>
+
+    <div class="sidebar" id="sidebar">
+        <div style="text-align: right; cursor: pointer;" onclick="toggleSidebar()">✕</div>
+        <h3>Menu</h3>
+        <div class="sidebar-item">Campus Details</div>
+        <div class="sidebar-item">Complaint</div>
+        <div class="sidebar-item sub-item">→ Track your complaint</div>
+        <div class="sidebar-item sub-item">→ Anonymous complaint of others</div>
+        <div class="sidebar-item">SMS & Alerts</div>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">Hey Mate, how can I help?</div>
+        <div class="chat-body">
+            <div class="chat-hint">Want some food?</div>
+            <div class="chat-hint">Want some medicine?</div>
+            <div class="chat-hint">Some daily need?</div>
+            <div class="chat-hint">Need some help?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" placeholder="Type here...">
+            <button>➤</button>
         </div>
     </div>
 
-    <div class="input-group">
-        <div class="flex justify-between items-center mb-2">
-            <label>Password</label>
-            <a href="forgot.html" class="text-xs font-bold text-blue-600">Forgot?</a>
-        </div>
-        <div class="input-wrapper">
-            <i class="fas fa-lock"></i>
-            <input id="password" type="password" required placeholder="••••••••">
-        </div>
-    </div>
+    <div class="ai-trigger" onclick="toggleChat()">AI</div>
 
-    <button class="btn-submit">Enter the Hub</button>
-    <p id="statusMsg" class="hidden"></p>
-</form>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
 
-<p class="mt-6 text-center text-sm text-slate-500">
-    New here?
-    <a href="register.html" class="font-bold text-blue-600">Create an account</a>
-</p>
-
-<div class="relative my-8">
-    <div class="absolute inset-0 flex items-center"><div class="w-full border-t"></div></div>
-    <div class="relative bg-white px-4 text-xs font-bold uppercase text-slate-400 w-fit mx-auto">
-        Single Sign-On
-    </div>
-</div>
-
-<button class="btn-google" id="googleLoginBtn">
-    <img src="https://www.svgrepo.com/show/355037/google.svg" width="20">
-    Continue with Google
-</button>
-
-</div>
-</main>
-
-<footer class="text-center text-sm text-slate-500 p-8">
-© 2026 Algorithm Avengers
-</footer>
-
-<!-- Toggle logic -->
-<script>
-let currentRole = 'student';
-const slider = document.getElementById('slider');
-const studentBtn = document.getElementById('studentBtn');
-const adminBtn = document.getElementById('adminBtn');
-const idLabel = document.getElementById('idLabel');
-
-function setRole(role){
-    currentRole = role;
-    slider.style.transform = role === 'admin' ? 'translateX(100%)' : 'translateX(0)';
-    studentBtn.classList.toggle('active', role === 'student');
-    adminBtn.classList.toggle('active', role === 'admin');
-    idLabel.textContent = role === 'admin' ? 'Institution Code' : 'Institutional ID';
-}
-
-studentBtn.onclick = () => setRole('student');
-adminBtn.onclick = () => setRole('admin');
-</script>
-
-<!-- Firebase-safe auth -->
-<script type="module">
-import { auth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "./firebase.js";
-
-const form = document.getElementById('loginForm');
-const msg = document.getElementById('statusMsg');
-
-form.addEventListener('submit', async e=>{
-    e.preventDefault();
-    msg.classList.remove('hidden');
-    msg.textContent = 'Authenticating...';
-    msg.className = 'text-blue-600 text-center mt-4 font-bold';
-
-    try{
-        await signInWithEmailAndPassword(auth, username.value, password.value);
-        msg.textContent = 'Login successful!';
-        msg.className = 'text-green-600 text-center mt-4 font-bold';
-        setTimeout(()=>location.href = currentRole === 'admin' ? 'admin-dashboard.html' : 'dashboard.html',1000);
-    }catch(err){
-        msg.textContent = err.message;
-        msg.className = 'text-red-600 text-center mt-4 font-bold';
-    }
-});
-
-document.getElementById('googleLoginBtn').onclick = async ()=>{
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-    location.href = 'dashboard.html';
-};
-</script>
+        function toggleChat() {
+            const chat = document.getElementById('chatBox');
+            chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+        }
+    </script>
 
 </body>
 </html>
