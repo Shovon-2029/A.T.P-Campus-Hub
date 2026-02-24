@@ -51,6 +51,13 @@
             color: var(--primary);
             cursor: pointer;
             padding: 5px 10px;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        nav span:hover, nav span.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
         }
 
         /* --- Main Content --- */
@@ -89,10 +96,26 @@
         .info-card {
             background: var(--white);
             padding: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border-left: 5px solid var(--accent);
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .info-card h4 {
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
+        
+        .info-card p {
+            margin: 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .info-card small {
+            color: #888;
+            font-size: 0.8rem;
         }
 
         /* --- Sidebar Menu --- */
@@ -137,6 +160,7 @@
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
         }
 
         .chat-box {
@@ -150,9 +174,16 @@
             display: none;
             flex-direction: column;
             overflow: hidden;
+            z-index: 50;
         }
 
-        .chat-header { background: var(--accent); color: white; padding: 10px; font-size: 0.9rem; }
+        .chat-box.active {
+            display: flex;
+        }
+
+        .chat-header { background: var(--accent); color: white; padding: 10px; font-size: 0.9rem; display: flex; justify-content: space-between;}
+        
+        .chat-header span { cursor: pointer; }
 
         .chat-body { padding: 15px; max-height: 300px; overflow-y: auto; }
 
@@ -163,6 +194,7 @@
             border-radius: 5px;
             font-size: 0.85rem;
             cursor: pointer;
+            color: var(--accent);
         }
 
         .chat-input-area { display: flex; border-top: 1px solid #eee; }
@@ -181,91 +213,202 @@
     </header>
 
     <nav>
-        <span>Schedule</span>
-        <span>Announcement</span>
-        <span>Event</span>
+        <span id="nav-schedule" class="active" onclick="loadData('schedule')">Schedule</span>
+        <span id="nav-announcements" onclick="loadData('announcements')">Announcement</span>
+        <span id="nav-events" onclick="loadData('events')">Event</span>
     </nav>
 
     <main>
         <div class="welcome-msg">Welcome Dear Student;</div>
-
-        <table class="schedule-table">
-            <thead>
-                <tr><th colspan="4">Schedule</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-            </tbody>
-        </table>
-
-        <div class="info-card"><strong>Announcement (#)</strong></div>
-        <div class="info-card"><strong>Event (#)</strong></div>
+        
+        <!-- Data from backend will be injected here -->
+        <div id="dynamic-content">
+            Loading...
+        </div>
     </main>
 
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div style="text-align: right; cursor: pointer;" onclick="toggleSidebar()">✕</div>
+        <div style="text-align: right; cursor: pointer; font-size: 1.2rem;" onclick="toggleSidebar()">✕</div>
         <h3>Menu</h3>
-        <div class="sidebar-item" onclick="window.location.href='register.html'">Campus Details</div>
+        <div class="sidebar-item" onclick="alert('Navigate to Campus Details')">Campus Details</div>
         <div class="sidebar-item" onclick="window.location.href='complaint.html'">Complaint</div>
-        <div class="sidebar-item sub-item"onclick="window.location.href='complaint.html'">→ Track your complaint</div>
-        <div class="sidebar-item sub-item"onclick="window.location.href='complaint.html'">→ Anonymous complaint of others</div>
-        <div class="sidebar-item">SMS & Alerts</div>
+        <div class="sidebar-item sub-item" onclick="window.location.href='complaint.html'">→ Track your complaint</div>
+        <div class="sidebar-item sub-item" onclick="window.location.href='complaint.html'">→ Anonymous complaint of others</div>
+        <div class="sidebar-item" onclick="alert('Navigate to SMS & Alerts')">SMS & Alerts</div>
     </div>
 
+    <!-- AI Chat Box -->
     <div class="chat-box" id="chatBox">
-        <div class="chat-header">Hey Mate, how can I help?</div>
+        <div class="chat-header">
+            <div>Hey Mate, how can I help?</div>
+            <span onclick="toggleChat()">✕</span>
+        </div>
         <div class="chat-body">
-            <div class="chat-hint">Want some food?</div>
-            <div class="chat-hint">Want some medicine?</div>
-            <div class="chat-hint">Some daily need?</div>
-            <div class="chat-hint">Need some help?</div>
+            <div class="chat-hint" onclick="fillHint('Want some food?')">Want some food?</div>
+            <div class="chat-hint" onclick="fillHint('Where is the medical center?')">Need medical help?</div>
+            <div class="chat-hint" onclick="fillHint('What is my schedule?')">Check Schedule?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" placeholder="Type here...">
-            <button>➤</button>
+            <input type="text" id="chatInput" placeholder="Type here..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()">➤</button>
         </div>
     </div>
 
     <div class="ai-trigger" onclick="toggleChat()">AI</div>
 
     <script>
+        const API_BASE_URL = "http://127.0.0.1:8000/api";
+
+        // --- Sidebar & Chat UI Logic ---
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Replace your frontend chat button logic with this:
-async function sendMessage() {
-    const inputField = document.querySelector('.chat-input-area input');
-    const message = inputField.value;
-    if(!message) return;
+        function toggleChat() {
+            document.getElementById('chatBox').classList.toggle('active');
+        }
 
-    // Add user message to UI
-    const chatBody = document.querySelector('.chat-body');
-    chatBody.innerHTML += `<div style="text-align: right; margin-bottom: 5px;"><b>You:</b> ${message}</div>`;
-    inputField.value = '';
+        function fillHint(text) {
+            document.getElementById('chatInput').value = text;
+        }
 
-    // Send to FastAPI backend
-    try {
-        const response = await fetch('http://127.0.0.1:8000/api/ai/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: message })
-        });
-        
-        const data = await response.json();
-        
-        // Add AI response to UI
-        chatBody.innerHTML += `<div style="color: var(--accent); margin-bottom: 10px;"><b>AI:</b> ${data.reply}</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll
-    } catch(err) {
-        console.error("Error communicating with backend", err);
-    }
-}
+        function handleEnter(e) {
+            if(e.key === 'Enter') sendMessage();
+        }
 
-// Attach to button
-document.querySelector('.chat-input-area button').onclick = sendMessage;
+        // --- AI Backend Connection ---
+        async function sendMessage() {
+            const inputField = document.getElementById('chatInput');
+            const message = inputField.value.trim();
+            if(!message) return;
+
+            const chatBody = document.querySelector('.chat-body');
+            
+            // Add user message to UI
+            chatBody.innerHTML += `<div style="text-align: right; margin-bottom: 10px; color: #333;"><b>You:</b> ${message}</div>`;
+            inputField.value = '';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/ai/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                // Add AI response to UI
+                chatBody.innerHTML += `<div style="color: var(--accent); margin-bottom: 10px; background: #f0f7ff; padding: 8px; border-radius: 5px;"><b>AI:</b> ${data.reply}</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll
+            } catch(err) {
+                console.error("Error communicating with backend", err);
+                chatBody.innerHTML += `<div style="color: red; margin-bottom: 10px;"><b>Error:</b> Could not connect to AI server.</div>`;
+            }
+        }
+
+        // --- Dynamic Content Loading ---
+        async function loadData(tab) {
+            // Update active styling on navigation
+            document.querySelectorAll('nav span').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${tab}`).classList.add('active');
+
+            const contentArea = document.getElementById('dynamic-content');
+            contentArea.innerHTML = 'Loading data...';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/${tab}`);
+                const data = await response.json();
+
+                if (tab === 'schedule') {
+                    renderSchedule(data, contentArea);
+                } else if (tab === 'announcements') {
+                    renderAnnouncements(data, contentArea);
+                } else if (tab === 'events') {
+                    renderEvents(data, contentArea);
+                }
+            } catch (error) {
+                console.error(`Error loading ${tab}:`, error);
+                contentArea.innerHTML = `<div style="color: red;">Failed to load ${tab}. Ensure the backend server is running.</div>`;
+            }
+        }
+
+        function renderSchedule(data, container) {
+            if (data.length === 0) {
+                container.innerHTML = '<div class="info-card">No classes scheduled.</div>';
+                return;
+            }
+
+            let html = `
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Subject</th>
+                            <th>Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            data.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.day}</td>
+                        <td>${item.time}</td>
+                        <td><strong>${item.subject}</strong></td>
+                        <td>${item.room}</td>
+                    </tr>
+                `;
+            });
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        function renderAnnouncements(data, container) {
+            if (data.length === 0) {
+                container.innerHTML = '<div class="info-card">No new announcements.</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(item => {
+                const date = new Date(item.created_at).toLocaleDateString();
+                html += `
+                    <div class="info-card">
+                        <h4>${item.title}</h4>
+                        <small>Posted on: ${date}</small>
+                        <p style="margin-top: 10px;">${item.content}</p>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderEvents(data, container) {
+            if (data.length === 0) {
+                container.innerHTML = '<div class="info-card">No upcoming events.</div>';
+                return;
+            }
+
+            let html = '';
+            data.forEach(item => {
+                const date = new Date(item.event_date).toLocaleDateString();
+                html += `
+                    <div class="info-card">
+                        <h4>${item.name}</h4>
+                        <small>📅 ${date} | 📍 ${item.location}</small>
+                        <p style="margin-top: 10px;">${item.description}</p>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Load schedule by default when the page boots up
+        window.onload = () => {
+            loadData('schedule');
+        };
     </script>
 
 </body>
