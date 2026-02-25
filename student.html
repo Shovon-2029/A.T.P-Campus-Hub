@@ -3,413 +3,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATP Campus Hub</title>
+    <title>ATP Campus Hub · Student Dashboard</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* ----- DESIGN SYSTEM (mirrors A.T.P Campus Hub) ----- */
         :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f4f7f6;
-            --white: #ffffff;
+            --primary: #0066FF;
+            --primary-light: #3385ff;
+            --secondary: #f8fdfd;
+            --bg: #f5f7f8;
+            --text: #1a2736;
+            --text-secondary: #19333c;
+            --card: #FFFFFF;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 40px rgba(0, 102, 255, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --red-accent: #f90101;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
         }
 
-        /* --- Header & Tabs --- */
+        /* ----- HEADER (glassmorphism, same as index) ----- */
         header {
-            background: var(--primary);
-            color: var(--white);
-            padding: 1rem;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 5%;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            gap: 6px;
         }
+        .logo .red { color: var(--red-accent); }
+        .logo .blue { color: var(--primary); }
 
         .menu-btn {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--text);
             cursor: pointer;
-            margin-right: 15px;
-        }
-
-        nav {
-            background: #ecf0f1;
+            width: 48px;
+            height: 48px;
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            background: white;
+            border: 1px solid var(--border);
+        }
+        .menu-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: rotate(90deg);
         }
 
-        nav span {
-            font-weight: bold;
+        /* ----- NAV TABS (pill style) ----- */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 5%;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 28px;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-tab i { font-size: 1.1rem; }
+        .nav-tab:hover {
+            border-color: var(--primary);
+            background: #eef5ff;
             color: var(--primary);
-            cursor: pointer;
-            padding: 5px 10px;
-            border-bottom: 3px solid transparent;
-            transition: 0.3s;
+            transform: translateY(-2px);
+        }
+        .nav-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
         }
 
-        nav span:hover, nav span.active {
-            color: var(--accent);
-            border-bottom: 3px solid var(--accent);
-        }
-
-        /* --- Main Content --- */
+        /* ----- MAIN CONTENT ----- */
         main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
             flex: 1;
-            padding: 20px;
-            overflow-y: auto;
+            width: 100%;
         }
 
-        .welcome-msg {
+        .welcome-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .welcome-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+        .welcome-title span {
+            background: linear-gradient(135deg, var(--primary) 0%, #3385ff 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .welcome-hero p {
             font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #333;
+            color: #64748b;
+        }
+
+        /* ----- SCHEDULE CARD (same as form card) ----- */
+        .schedule-container {
+            background: var(--card);
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            margin-bottom: 40px;
+        }
+        .schedule-container:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
         }
 
         .schedule-table {
             width: 100%;
             border-collapse: collapse;
-            background: var(--white);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
         }
-
-        .schedule-table th, .schedule-table td {
-            border: 1px solid #eee;
-            padding: 15px;
-            text-align: center;
-        }
-
         .schedule-table th {
-            background: #f8f9fa;
+            text-align: left;
+            padding: 16px 12px;
+            font-weight: 700;
+            color: var(--text);
+            border-bottom: 2px solid var(--border);
+        }
+        .schedule-table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--border);
+            color: #475569;
+        }
+        .schedule-table tbody tr:hover td {
+            background: #f8fafc;
+            color: var(--text);
         }
 
+        /* ----- INFO CARDS (feature card style) ----- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
         .info-card {
-            background: var(--white);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--accent);
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: var(--card);
+            padding: 32px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
         }
-        
-        .info-card h4 {
-            margin: 0 0 5px 0;
-            color: var(--primary);
+        .info-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
         }
-        
+        .info-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         .info-card p {
-            margin: 0;
-            color: #555;
-            font-size: 0.95rem;
-        }
-        
-        .info-card small {
-            color: #888;
-            font-size: 0.8rem;
+            color: #64748b;
+            font-size: 1rem;
         }
 
-        /* --- Sidebar Menu --- */
+        /* ----- SIDEBAR (off-canvas, same card style) ----- */
         .sidebar {
             position: fixed;
-            left: -280px;
+            left: -340px;
             top: 0;
-            width: 250px;
-            height: 100%;
-            background: var(--white);
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
-            z-index: 100;
-            padding: 20px;
+            width: 320px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            padding: 32px 24px;
         }
-
         .sidebar.active { left: 0; }
 
-        .sidebar h3 { color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px; }
-
-        .sidebar-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #f9f9f9;
+        .sidebar-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 1.5rem;
+            color: #94a3b8;
             cursor: pointer;
-            display: block;
-            color: #555;
-            text-decoration: none;
+            transition: var(--transition);
+        }
+        .sidebar-close:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
         }
 
-        .sidebar-item:hover { color: var(--accent); }
+        .sidebar h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: var(--text);
+        }
+        .sidebar h3 i { color: var(--primary); margin-right: 10px; }
 
-        .sub-item { padding-left: 20px; font-size: 0.9rem; }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .sidebar-item i { width: 24px; color: var(--primary); }
+        .sidebar-item:hover {
+            color: var(--primary);
+            padding-left: 8px;
+        }
 
-        /* --- AI Chat Box --- */
+        /* ----- AI CHAT (floating, modern) ----- */
         .ai-trigger {
             position: fixed;
-            right: 20px;
-            bottom: 20px;
-            background: var(--accent);
-            color: white;
-            padding: 15px;
+            right: 30px;
+            bottom: 30px;
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-xl);
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-weight: bold;
+            transition: var(--transition);
+            z-index: 1500;
+            border: 3px solid white;
+        }
+        .ai-trigger:hover {
+            transform: scale(1.1) rotate(10deg);
+            background: var(--primary-light);
         }
 
         .chat-box {
             position: fixed;
-            right: 20px;
-            bottom: 80px;
-            width: 280px;
-            background: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            right: 30px;
+            bottom: 110px;
+            width: 360px;
+            background: white;
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-xl);
             display: none;
             flex-direction: column;
             overflow: hidden;
-            z-index: 50;
+            z-index: 1501;
         }
+        .chat-box.active { display: flex; }
 
-        .chat-box.active {
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px 24px;
+            font-weight: 700;
+            font-size: 1.2rem;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        .chat-header span { font-size: 0.9rem; opacity: 0.9; }
 
-        .chat-header { background: var(--accent); color: white; padding: 10px; font-size: 0.9rem; display: flex; justify-content: space-between;}
-        
-        .chat-header span { cursor: pointer; }
-
-        .chat-body { padding: 15px; max-height: 300px; overflow-y: auto; }
-
+        .chat-body {
+            padding: 20px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
         .chat-hint {
-            background: #f0f7ff;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 5px;
-            font-size: 0.85rem;
+            background: #f8fafc;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
             cursor: pointer;
-            color: var(--accent);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-hint i { color: var(--primary); font-size: 1.2rem; }
+        .chat-hint:hover {
+            background: #eef5ff;
+            border-color: var(--primary);
+            transform: translateX(5px);
         }
 
-        .chat-input-area { display: flex; border-top: 1px solid #eee; }
+        .chat-input-area {
+            display: flex;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            background: white;
+        }
+        .chat-input-area input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+        .chat-input-area input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.15);
+        }
+        .chat-input-area button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 0 24px;
+            margin-left: 10px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .chat-input-area button:hover {
+            background: var(--primary-light);
+            transform: scale(1.05);
+        }
 
-        .chat-input-area input { flex: 1; border: none; padding: 10px; outline: none; }
+        footer {
+            text-align: center;
+            padding: 30px 24px;
+            color: #94a3b8;
+            font-weight: 500;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
 
-        .chat-input-area button { background: none; border: none; color: var(--accent); padding: 10px; cursor: pointer; }
-
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 700px) {
+            .welcome-title { font-size: 2.2rem; }
+            .schedule-container { padding: 20px; overflow-x: auto; }
+            .schedule-table { min-width: 600px; }
+            .chat-box { width: 300px; right: 15px; }
+            .ai-trigger { width: 60px; height: 60px; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <header>
-        <div class="menu-btn" onclick="toggleSidebar()">☰</div>
-        <div style="font-weight: bold; font-size: 1.2rem;">ATP Campus Hub</div>
+        <div class="logo">
+            <span class="red">ATP</span> <span class="blue">Campus Hub</span>
+        </div>
+        <div class="menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
     </header>
 
-    <nav>
-        <span id="nav-schedule" class="active" onclick="loadData('schedule')">Schedule</span>
-        <span id="nav-announcements" onclick="loadData('announcements')">Announcement</span>
-        <span id="nav-events" onclick="loadData('events')">Event</span>
+    <!-- NAV TABS -->
+    <nav class="nav-tabs">
+        <a href="#" class="nav-tab active" onclick="switchTab('schedule'); return false;"><i class="fas fa-calendar-alt"></i> Schedule</a>
+        <a href="#" class="nav-tab" onclick="switchTab('announcement'); return false;"><i class="fas fa-bullhorn"></i> Announcement</a>
+        <a href="#" class="nav-tab" onclick="switchTab('events'); return false;"><i class="fas fa-star"></i> Events</a>
     </nav>
 
+    <!-- MAIN CONTENT -->
     <main>
-        <div class="welcome-msg">Welcome Dear Student;</div>
-        
-        <!-- Data from backend will be injected here -->
-        <div id="dynamic-content">
-            Loading...
+        <div class="welcome-hero">
+            <h1 class="welcome-title">Welcome <span>Back!</span></h1>
+            <p>Your campus experience, elevated ✨</p>
+        </div>
+
+        <!-- SCHEDULE SECTION (visible by default) -->
+        <div id="scheduleSection">
+            <div class="schedule-container">
+                <table class="schedule-table">
+                    <thead>
+                        <tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>09:00 AM</td><td>Mathematics</td><td>Physics Lab</td><td>Digital Electronics</td></tr>
+                        <tr><td>11:00 AM</td><td>Circuits</td><td>Mathematics</td><td>Workshop</td></tr>
+                        <tr><td>02:00 PM</td><td>Programming</td><td>Circuits</td><td>Physics</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ANNOUNCEMENT SECTION (hidden initially) -->
+        <div id="announcementSection" style="display: none;">
+            <div class="info-grid">
+                <div class="info-card"><h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Exam Schedule</h3><p>Mid-term exams start from March 15. Check portal for details.</p></div>
+                <div class="info-card"><h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Library Hours</h3><p>Library now open 24/7 during exam week.</p></div>
+                <div class="info-card"><h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Holiday Notice</h3><p>University closed on Feb 26 for Sports Day.</p></div>
+            </div>
+        </div>
+
+        <!-- EVENTS SECTION (hidden initially) -->
+        <div id="eventsSection" style="display: none;">
+            <div class="info-grid">
+                <div class="info-card"><h3><i class="fas fa-star" style="color: #0066FF;"></i> Tech Fest 2026</h3><p>March 20-22 – Registrations open now!</p></div>
+                <div class="info-card"><h3><i class="fas fa-star" style="color: #0066FF;"></i> Hackathon</h3><p>48-hour coding challenge – win prizes.</p></div>
+                <div class="info-card"><h3><i class="fas fa-star" style="color: #0066FF;"></i> Cultural Night</h3><p>March 25 – Talent show & music.</p></div>
+            </div>
+        </div>
+
+        <!-- QUICK INFO CARDS (always visible) -->
+        <div style="margin-top: 40px;">
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Announcements (5)</h3>
+                    <p>Latest campus updates and important notices</p>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-star" style="color: #0066FF;"></i> Events (3)</h3>
+                    <p>Upcoming workshops, seminars & celebrations</p>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR (off-canvas) -->
     <div class="sidebar" id="sidebar">
-        <div style="text-align: right; cursor: pointer; font-size: 1.2rem;" onclick="toggleSidebar()">✕</div>
-        <h3>Menu</h3>
-        <div class="sidebar-item" onclick="alert('Navigate to Campus Details')">Campus Details</div>
-        <div class="sidebar-item" onclick="window.location.href='complaint.html'">Complaint</div>
-        <div class="sidebar-item sub-item" onclick="window.location.href='complaint.html'">→ Track your complaint</div>
-        <div class="sidebar-item sub-item" onclick="window.location.href='complaint.html'">→ Anonymous complaint of others</div>
-        <div class="sidebar-item" onclick="alert('Navigate to SMS & Alerts')">SMS & Alerts</div>
+        <div class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <h3><i class="fas fa-university"></i> Campus Menu</h3>
+        <a href="#" class="sidebar-item"><i class="fas fa-building"></i> Campus Details</a>
+        <a href="complaint.html" class="sidebar-item"><i class="fas fa-exclamation-triangle"></i> Complaint Portal</a>
+        <a href="#" class="sidebar-item"><i class="fas fa-sms"></i> SMS & Alerts</a>
     </div>
 
-    <!-- AI Chat Box -->
+    <!-- AI CHAT -->
+    <div class="ai-trigger" onclick="toggleChat()">AI</div>
     <div class="chat-box" id="chatBox">
         <div class="chat-header">
-            <div>Hey Mate, how can I help?</div>
-            <span onclick="toggleChat()">✕</span>
+            <span><i class="fas fa-robot" style="margin-right: 8px;"></i> Campus AI</span>
+            <span>🟢 Online</span>
         </div>
         <div class="chat-body">
-            <div class="chat-hint" onclick="fillHint('Want some food?')">Want some food?</div>
-            <div class="chat-hint" onclick="fillHint('Where is the medical center?')">Need medical help?</div>
-            <div class="chat-hint" onclick="fillHint('What is my schedule?')">Check Schedule?</div>
+            <div class="chat-hint" onclick="quickAsk('food')"><i class="fas fa-pizza-slice"></i> Need food delivery?</div>
+            <div class="chat-hint" onclick="quickAsk('medicine')"><i class="fas fa-pills"></i> Medicine required?</div>
+            <div class="chat-hint" onclick="quickAsk('essentials')"><i class="fas fa-shopping-bag"></i> Daily essentials?</div>
+            <div class="chat-hint" onclick="quickAsk('help')"><i class="fas fa-question-circle"></i> Campus help?</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Type here..." onkeypress="handleEnter(event)">
-            <button onclick="sendMessage()">➤</button>
+            <input type="text" id="chatInput" placeholder="Ask me anything...">
+            <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <div class="ai-trigger" onclick="toggleChat()">AI</div>
+    <footer>
+        <p>© 2026 Algorithm Avengers · Protecting the Campus Voice</p>
+    </footer>
 
     <script>
-        const API_BASE_URL = "http://127.0.0.1:8000/api";
-
-        // --- Sidebar & Chat UI Logic ---
+        // ---------- SIDEBAR TOGGLE ----------
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
+        // ---------- CHAT TOGGLE ----------
         function toggleChat() {
             document.getElementById('chatBox').classList.toggle('active');
         }
 
-        function fillHint(text) {
-            document.getElementById('chatInput').value = text;
+        // Quick ask (just closes chat as demo)
+        function quickAsk(topic) {
+            alert(`You asked about: ${topic} (demo action)`);
+            toggleChat(); // close chat after selection (optional)
         }
 
-        function handleEnter(e) {
-            if(e.key === 'Enter') sendMessage();
-        }
-
-        // --- AI Backend Connection ---
-        async function sendMessage() {
-            const inputField = document.getElementById('chatInput');
-            const message = inputField.value.trim();
-            if(!message) return;
-
-            const chatBody = document.querySelector('.chat-body');
-            
-            // Add user message to UI
-            chatBody.innerHTML += `<div style="text-align: right; margin-bottom: 10px; color: #333;"><b>You:</b> ${message}</div>`;
-            inputField.value = '';
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/ai/chat`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
-                });
-                
-                const data = await response.json();
-                
-                // Add AI response to UI
-                chatBody.innerHTML += `<div style="color: var(--accent); margin-bottom: 10px; background: #f0f7ff; padding: 8px; border-radius: 5px;"><b>AI:</b> ${data.reply}</div>`;
-                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll
-            } catch(err) {
-                console.error("Error communicating with backend", err);
-                chatBody.innerHTML += `<div style="color: red; margin-bottom: 10px;"><b>Error:</b> Could not connect to AI server.</div>`;
+        function sendChat() {
+            const input = document.getElementById('chatInput');
+            if(input.value.trim() !== '') {
+                alert(`Demo: your message "${input.value}" would be sent to AI.`);
+                input.value = '';
+                toggleChat(); // close after send (optional)
             }
         }
 
-        // --- Dynamic Content Loading ---
-        async function loadData(tab) {
-            // Update active styling on navigation
-            document.querySelectorAll('nav span').forEach(el => el.classList.remove('active'));
-            document.getElementById(`nav-${tab}`).classList.add('active');
+        // ---------- TAB SWITCHING (Schedule / Announcement / Events) ----------
+        function switchTab(tab) {
+            // Update active class on nav tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.closest('.nav-tab').classList.add('active');
 
-            const contentArea = document.getElementById('dynamic-content');
-            contentArea.innerHTML = 'Loading data...';
+            // Show/hide sections
+            const scheduleSec = document.getElementById('scheduleSection');
+            const announcementSec = document.getElementById('announcementSection');
+            const eventsSec = document.getElementById('eventsSection');
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/${tab}`);
-                const data = await response.json();
-
-                if (tab === 'schedule') {
-                    renderSchedule(data, contentArea);
-                } else if (tab === 'announcements') {
-                    renderAnnouncements(data, contentArea);
-                } else if (tab === 'events') {
-                    renderEvents(data, contentArea);
-                }
-            } catch (error) {
-                console.error(`Error loading ${tab}:`, error);
-                contentArea.innerHTML = `<div style="color: red;">Failed to load ${tab}. Ensure the backend server is running.</div>`;
+            if(tab === 'schedule') {
+                scheduleSec.style.display = 'block';
+                announcementSec.style.display = 'none';
+                eventsSec.style.display = 'none';
+            } else if(tab === 'announcement') {
+                scheduleSec.style.display = 'none';
+                announcementSec.style.display = 'block';
+                eventsSec.style.display = 'none';
+            } else if(tab === 'events') {
+                scheduleSec.style.display = 'none';
+                announcementSec.style.display = 'none';
+                eventsSec.style.display = 'block';
             }
         }
 
-        function renderSchedule(data, container) {
-            if (data.length === 0) {
-                container.innerHTML = '<div class="info-card">No classes scheduled.</div>';
-                return;
+        // ---------- CLOSE SIDEBAR WHEN CLICKING OUTSIDE ----------
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
             }
+        });
 
-            let html = `
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>Time</th>
-                            <th>Subject</th>
-                            <th>Room</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            data.forEach(item => {
-                html += `
-                    <tr>
-                        <td>${item.day}</td>
-                        <td>${item.time}</td>
-                        <td><strong>${item.subject}</strong></td>
-                        <td>${item.room}</td>
-                    </tr>
-                `;
-            });
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
-
-        function renderAnnouncements(data, container) {
-            if (data.length === 0) {
-                container.innerHTML = '<div class="info-card">No new announcements.</div>';
-                return;
+        // Close chat when clicking outside (optional)
+        document.addEventListener('click', function(event) {
+            const chatBox = document.getElementById('chatBox');
+            const aiTrigger = document.querySelector('.ai-trigger');
+            if (!chatBox.contains(event.target) && !aiTrigger.contains(event.target)) {
+                chatBox.classList.remove('active');
             }
-
-            let html = '';
-            data.forEach(item => {
-                const date = new Date(item.created_at).toLocaleDateString();
-                html += `
-                    <div class="info-card">
-                        <h4>${item.title}</h4>
-                        <small>Posted on: ${date}</small>
-                        <p style="margin-top: 10px;">${item.content}</p>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function renderEvents(data, container) {
-            if (data.length === 0) {
-                container.innerHTML = '<div class="info-card">No upcoming events.</div>';
-                return;
-            }
-
-            let html = '';
-            data.forEach(item => {
-                const date = new Date(item.event_date).toLocaleDateString();
-                html += `
-                    <div class="info-card">
-                        <h4>${item.name}</h4>
-                        <small>📅 ${date} | 📍 ${item.location}</small>
-                        <p style="margin-top: 10px;">${item.description}</p>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // Load schedule by default when the page boots up
-        window.onload = () => {
-            loadData('schedule');
-        };
+        });
     </script>
-
 </body>
 </html>
