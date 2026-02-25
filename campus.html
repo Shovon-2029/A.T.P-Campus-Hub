@@ -1,587 +1,645 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATP Campus Hub · Student Dashboard</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* ----- DESIGN SYSTEM (mirrors A.T.P Campus Hub) ----- */
-        :root {
-            --primary: #0066FF;
-            --primary-light: #3385ff;
-            --secondary: #f8fdfd;
-            --bg: #f5f7f8;
-            --text: #1a2736;
-            --text-secondary: #19333c;
-            --card: #FFFFFF;
-            --border: #E2E8F0;
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            --shadow-xl: 0 20px 40px rgba(0, 102, 255, 0.15);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --red-accent: #f90101;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Sphere · detail & reviews</title>
+  <!-- Font Awesome 5 for clean icons (free) -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    body {
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
 
-        /* ----- HEADER (glassmorphism, same as index) ----- */
-        header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 5%;
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.85);
-            border-bottom: 1px solid var(--border);
-            z-index: 100;
-        }
+    .campus-wrapper {
+      max-width: 1100px;
+      width: 100%;
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .logo .red { color: var(--red-accent); }
-        .logo .blue { color: var(--primary); }
+    /* main card style */
+    .card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.15);
+      padding: 2rem;
+      transition: 0.2s;
+    }
 
-        .menu-btn {
-            font-size: 1.8rem;
-            color: var(--text);
-            cursor: pointer;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition);
-            background: white;
-            border: 1px solid var(--border);
-        }
-        .menu-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: rotate(90deg);
-        }
+    /* institute detail card */
+    .institute-card {
+      margin-bottom: 2.5rem;
+      background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
+      border: 1px solid rgba(165, 180, 202, 0.2);
+    }
 
-        /* ----- NAV TABS (pill style) ----- */
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 20px 5%;
-            background: white;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
+    .institute-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+    }
 
-        .nav-tab {
-            padding: 10px 28px;
-            background: transparent;
-            border: 1.5px solid var(--border);
-            border-radius: 40px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .nav-tab i { font-size: 1.1rem; }
-        .nav-tab:hover {
-            border-color: var(--primary);
-            background: #eef5ff;
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-        .nav-tab.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
+    .campus-icon {
+      background: #1e3c5c;
+      width: 80px;
+      height: 80px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      box-shadow: 0 15px 20px -10px #1e3c5c60;
+    }
 
-        /* ----- MAIN CONTENT ----- */
-        main {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 24px;
-            flex: 1;
-            width: 100%;
-        }
+    .institute-heading h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #0b2a41;
+      letter-spacing: -0.02em;
+    }
 
-        .welcome-hero {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .welcome-title {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 12px;
-        }
-        .welcome-title span {
-            background: linear-gradient(135deg, var(--primary) 0%, #3385ff 80%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .welcome-hero p {
-            font-size: 1.2rem;
-            color: #64748b;
-        }
+    .institute-heading .badge {
+      background: #e6f0fa;
+      color: #1e3c5c;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
 
-        /* ----- SCHEDULE CARD (same as form card) ----- */
-        .schedule-container {
-            background: var(--card);
-            border-radius: 32px;
-            border: 1px solid var(--border);
-            padding: 32px;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            margin-bottom: 40px;
-        }
-        .schedule-container:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-xl);
-        }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
 
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .schedule-table th {
-            text-align: left;
-            padding: 16px 12px;
-            font-weight: 700;
-            color: var(--text);
-            border-bottom: 2px solid var(--border);
-        }
-        .schedule-table td {
-            padding: 16px 12px;
-            border-bottom: 1px solid var(--border);
-            color: #475569;
-        }
-        .schedule-table tbody tr:hover td {
-            background: #f8fafc;
-            color: var(--text);
-        }
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: #f8fafd;
+      padding: 0.8rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid #e2e8f0;
+    }
 
-        /* ----- INFO CARDS (feature card style) ----- */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        .info-card {
-            background: var(--card);
-            padding: 32px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-        }
-        .info-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: var(--shadow-xl);
-        }
-        .info-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .info-card p {
-            color: #64748b;
-            font-size: 1rem;
-        }
+    .detail-item i {
+      color: #2c5f8a;
+      width: 24px;
+      font-size: 1.2rem;
+    }
 
-        /* ----- SIDEBAR (off-canvas, same card style) ----- */
-        .sidebar {
-            position: fixed;
-            left: -340px;
-            top: 0;
-            width: 320px;
-            height: 100vh;
-            background: white;
-            border-right: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 2000;
-            padding: 32px 24px;
-        }
-        .sidebar.active { left: 0; }
+    .detail-item span {
+      font-weight: 500;
+      color: #1e293b;
+    }
 
-        .sidebar-close {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            font-size: 1.5rem;
-            color: #94a3b8;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .sidebar-close:hover {
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
+    .detail-item small {
+      color: #5f6c80;
+      margin-left: 0.3rem;
+      font-weight: 400;
+    }
 
-        .sidebar h3 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 40px;
-            color: var(--text);
-        }
-        .sidebar h3 i { color: var(--primary); margin-right: 10px; }
+    .desc-text {
+      margin-top: 1.5rem;
+      color: #334155;
+      line-height: 1.6;
+      border-left: 4px solid #a0c4e2;
+      padding-left: 1.3rem;
+      background: #f9fcff;
+      border-radius: 0 12px 12px 0;
+      padding: 1rem 1.5rem;
+    }
 
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 0;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            transition: var(--transition);
-        }
-        .sidebar-item i { width: 24px; color: var(--primary); }
-        .sidebar-item:hover {
-            color: var(--primary);
-            padding-left: 8px;
-        }
+    /* ===== REVIEW SECTION ===== */
+    .review-section {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.15);
+      padding: 2rem;
+    }
 
-        /* ----- AI CHAT (floating, modern) ----- */
-        .ai-trigger {
-            position: fixed;
-            right: 30px;
-            bottom: 30px;
-            width: 70px;
-            height: 70px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-            box-shadow: var(--shadow-xl);
-            cursor: pointer;
-            transition: var(--transition);
-            z-index: 1500;
-            border: 3px solid white;
-        }
-        .ai-trigger:hover {
-            transform: scale(1.1) rotate(10deg);
-            background: var(--primary-light);
-        }
+    .review-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
 
-        .chat-box {
-            position: fixed;
-            right: 30px;
-            bottom: 110px;
-            width: 360px;
-            background: white;
-            border-radius: 32px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-xl);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1501;
-        }
-        .chat-box.active { display: flex; }
+    .review-header h2 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #0b2a41;
+    }
 
-        .chat-header {
-            background: var(--primary);
-            color: white;
-            padding: 20px 24px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-header span { font-size: 0.9rem; opacity: 0.9; }
+    .review-header h2 i {
+      color: #f4b740;
+      margin-right: 10px;
+    }
 
-        .chat-body {
-            padding: 20px;
-            max-height: 320px;
-            overflow-y: auto;
-        }
-        .chat-hint {
-            background: #f8fafc;
-            padding: 14px 18px;
-            margin-bottom: 10px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .chat-hint i { color: var(--primary); font-size: 1.2rem; }
-        .chat-hint:hover {
-            background: #eef5ff;
-            border-color: var(--primary);
-            transform: translateX(5px);
-        }
+    .avg-rating-card {
+      background: #f0f4fa;
+      padding: 0.8rem 1.8rem;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
 
-        .chat-input-area {
-            display: flex;
-            padding: 16px 20px;
-            border-top: 1px solid var(--border);
-            background: white;
-        }
-        .chat-input-area input {
-            flex: 1;
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 12px 20px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: var(--transition);
-        }
-        .chat-input-area input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0,102,255,0.15);
-        }
-        .chat-input-area button {
-            background: var(--primary);
-            border: none;
-            color: white;
-            font-weight: 700;
-            padding: 0 24px;
-            margin-left: 10px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .chat-input-area button:hover {
-            background: var(--primary-light);
-            transform: scale(1.05);
-        }
+    .avg-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1e3c5c;
+    }
 
-        footer {
-            text-align: center;
-            padding: 30px 24px;
-            color: #94a3b8;
-            font-weight: 500;
-            border-top: 1px solid var(--border);
-            margin-top: 20px;
-        }
+    .stars-avg {
+      color: #f5b342;
+      font-size: 1.3rem;
+      letter-spacing: 4px;
+    }
 
-        /* ----- RESPONSIVE ----- */
-        @media (max-width: 700px) {
-            .welcome-title { font-size: 2.2rem; }
-            .schedule-container { padding: 20px; overflow-x: auto; }
-            .schedule-table { min-width: 600px; }
-            .chat-box { width: 300px; right: 15px; }
-            .ai-trigger { width: 60px; height: 60px; }
-        }
-    </style>
+    .review-count {
+      background: #cfdeed;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-weight: 500;
+      color: #0f2c41;
+    }
+
+    /* reviews list */
+    .reviews-list {
+      margin: 2.5rem 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: #ffffff;
+      border: 1px solid #e9edf3;
+      border-radius: 24px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.02);
+      transition: 0.2s;
+    }
+
+    .review-card:hover {
+      border-color: #b9d1ec;
+      box-shadow: 0 10px 22px -10px #a0bbd6;
+    }
+
+    .reviewer-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.7rem;
+    }
+
+    .reviewer-name {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #0f3a5e;
+    }
+
+    .review-date {
+      color: #6f7d95;
+      font-size: 0.9rem;
+      background: #ecf1f7;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+
+    .review-stars {
+      color: #f5b342;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      margin: 0.5rem 0 0.6rem;
+    }
+
+    .review-comment {
+      color: #2d3a4b;
+      line-height: 1.5;
+      font-size: 1rem;
+      background: #f6faff;
+      padding: 1rem 1.2rem;
+      border-radius: 18px;
+      border: 1px solid #e5ebf3;
+    }
+
+    .empty-reviews {
+      text-align: center;
+      padding: 3rem;
+      background: #f8fafc;
+      border-radius: 40px;
+      color: #5f718b;
+      font-size: 1.2rem;
+    }
+
+    /* form */
+    .form-title {
+      font-size: 1.5rem;
+      margin: 1.5rem 0 1rem 0;
+      color: #1e3a5f;
+      font-weight: 500;
+    }
+
+    .review-form {
+      background: #f7fafd;
+      border-radius: 28px;
+      padding: 2rem;
+      border: 1px solid #dae5f0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      color: #1f3a57;
+      margin-left: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 1rem 1.2rem;
+      border: 2px solid #dbe1ea;
+      border-radius: 40px;
+      font-size: 1rem;
+      background: white;
+      outline: none;
+      transition: 0.15s;
+    }
+
+    .form-group textarea {
+      border-radius: 28px;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #1e5f9e;
+      box-shadow: 0 0 0 4px rgba(20, 100, 180, 0.15);
+    }
+
+    .btn-submit {
+      background: #1e3c5c;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.15s;
+      border: 1px solid #16344d;
+      width: fit-content;
+      margin-top: 0.5rem;
+    }
+
+    .btn-submit:hover {
+      background: #143450;
+      transform: scale(1.02);
+      box-shadow: 0 8px 18px -8px #102c42;
+    }
+
+    .btn-submit i {
+      font-size: 1.2rem;
+    }
+
+    small.form-hint {
+      color: #ba332b;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px dashed #cbd5e1;
+      margin: 1.8rem 0 1rem 0;
+    }
+
+    /* responsive */
+    @media (max-width: 650px) {
+      .institute-header {
+        flex-direction: column;
+        align-items: start;
+      }
+      .review-header {
+        flex-direction: column;
+        align-items: start;
+        gap: 1rem;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .full-width {
+        grid-column: span 1;
+      }
+      .campus-wrapper {
+        padding: 0;
+      }
+      .card, .review-section {
+        padding: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-
-    <!-- HEADER -->
-    <header>
-        <div class="logo">
-            <span class="red">ATP</span> <span class="blue">Campus Hub</span>
+  <div class="campus-wrapper">
+    <!-- INSTITUTE DETAIL CARD (part of review section context) -->
+    <div class="institute-card card">
+      <div class="institute-header">
+        <div class="campus-icon">
+          <i class="fas fa-landmark"></i>
         </div>
-        <div class="menu-btn" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i>
+        <div class="institute-heading">
+          <h1>Engineering Institute of Technology · Karnataka</h1>
+          <span class="badge"><i class="fas fa-star" style="color: #f5b342;"></i> AICTE · NAAC A++</span>
         </div>
-    </header>
+      </div>
 
-    <!-- NAV TABS -->
-    <nav class="nav-tabs">
-        <a href="#" class="nav-tab active" onclick="switchTab('schedule'); return false;"><i class="fas fa-calendar-alt"></i> Schedule</a>
-        <a href="#" class="nav-tab" onclick="switchTab('announcement'); return false;"><i class="fas fa-bullhorn"></i> Announcement</a>
-        <a href="#" class="nav-tab" onclick="switchTab('events'); return false;"><i class="fas fa-star"></i> Events</a>
-    </nav>
+      <div class="detail-grid">
+        <div class="detail-item"><i class="fas fa-map-pin"></i> <span>Surathkal, Mangalore <small>INDIA</small></span></div>
+        <div class="detail-item"><i class="fas fa-users"></i> <span>5,200+ students</span></div>
+        <div class="detail-item"><i class="fas fa-chalkboard-teacher"></i> <span>340 faculty</span></div>
+        <div class="detail-item"><i class="fas fa-calendar-alt"></i> <span>Est. 1960</span></div>
+      </div>
 
-    <!-- MAIN CONTENT -->
-    <main>
-        <div class="welcome-hero">
-            <h1 class="welcome-title">Welcome <span>Back!</span></h1>
-            <p>Your campus experience, elevated ✨</p>
-        </div>
-
-        <!-- SCHEDULE SECTION (visible by default) -->
-        <div id="scheduleSection">
-            <div class="schedule-container">
-                <table class="schedule-table">
-                    <thead>
-                        <tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>09:00 AM</td><td>Mathematics</td><td>Physics Lab</td><td>Digital Electronics</td></tr>
-                        <tr><td>11:00 AM</td><td>Circuits</td><td>Mathematics</td><td>Workshop</td></tr>
-                        <tr><td>02:00 PM</td><td>Programming</td><td>Circuits</td><td>Physics</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ANNOUNCEMENT SECTION (hidden initially) -->
-        <div id="announcementSection" style="display: none;">
-            <div class="info-grid">
-                <div class="info-card"><h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Exam Schedule</h3><p>Mid-term exams start from March 15. Check portal for details.</p></div>
-                <div class="info-card"><h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Library Hours</h3><p>Library now open 24/7 during exam week.</p></div>
-                <div class="info-card"><h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Holiday Notice</h3><p>University closed on Feb 26 for Sports Day.</p></div>
-            </div>
-        </div>
-
-        <!-- EVENTS SECTION (hidden initially) -->
-        <div id="eventsSection" style="display: none;">
-            <div class="info-grid">
-                <div class="info-card"><h3><i class="fas fa-star" style="color: #0066FF;"></i> Tech Fest 2026</h3><p>March 20-22 – Registrations open now!</p></div>
-                <div class="info-card"><h3><i class="fas fa-star" style="color: #0066FF;"></i> Hackathon</h3><p>48-hour coding challenge – win prizes.</p></div>
-                <div class="info-card"><h3><i class="fas fa-star" style="color: #0066FF;"></i> Cultural Night</h3><p>March 25 – Talent show & music.</p></div>
-            </div>
-        </div>
-
-        <!-- QUICK INFO CARDS (always visible) -->
-        <div style="margin-top: 40px;">
-            <div class="info-grid">
-                <div class="info-card">
-                    <h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Announcements (5)</h3>
-                    <p>Latest campus updates and important notices</p>
-                </div>
-                <div class="info-card">
-                    <h3><i class="fas fa-star" style="color: #0066FF;"></i> Events (3)</h3>
-                    <p>Upcoming workshops, seminars & celebrations</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- SIDEBAR (off-canvas) -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
-        <h3><i class="fas fa-university"></i> Campus Menu</h3>
-        <a href="campus.html" class="sidebar-item"><i class="fas fa-building"></i> Campus Details</a>
-        <a href="complaint.html" class="sidebar-item"><i class="fas fa-exclamation-triangle"></i> Complaint Portal</a>
-        <a href="#" class="sidebar-item"><i class="fas fa-sms"></i> SMS & Alerts</a>
+      <div class="desc-text">
+        <i class="fas fa-quote-left" style="color:#1e5f9e; opacity:0.6;"></i> 
+        EITK is a premier technical institute nestled along the Arabian Sea. Known for research, lush green campus, and vibrant student life. Offers B.Tech, M.Tech & PhD programs.
+      </div>
     </div>
 
-    <!-- AI CHAT -->
-    <div class="ai-trigger" onclick="toggleChat()">AI</div>
-    <div class="chat-box" id="chatBox">
-        <div class="chat-header">
-            <span><i class="fas fa-robot" style="margin-right: 8px;"></i> Campus AI</span>
-            <span>🟢 Online</span>
+    <!-- ========== REVIEW SECTION (contains institute details context + reviews) ========== -->
+    <section class="review-section">
+      <div class="review-header">
+        <h2><i class="fas fa-comments"></i> Campus reviews</h2>
+        <!-- dynamic average and count will be injected via js -->
+        <div class="avg-rating-card" id="averageContainer">
+          <span class="avg-number" id="avgDisplay">0.0</span>
+          <span class="stars-avg" id="avgStars">☆☆☆☆☆</span>
+          <span class="review-count" id="reviewCountDisplay">0 reviews</span>
         </div>
-        <div class="chat-body">
-            <div class="chat-hint" onclick="quickAsk('food')"><i class="fas fa-pizza-slice"></i> Need food delivery?</div>
-            <div class="chat-hint" onclick="quickAsk('medicine')"><i class="fas fa-pills"></i> Medicine required?</div>
-            <div class="chat-hint" onclick="quickAsk('essentials')"><i class="fas fa-shopping-bag"></i> Daily essentials?</div>
-            <div class="chat-hint" onclick="quickAsk('help')"><i class="fas fa-question-circle"></i> Campus help?</div>
+      </div>
+
+      <!-- container for all review cards -->
+      <div id="reviewsListContainer" class="reviews-list">
+        <!-- JS will fill dynamic cards here -->
+      </div>
+
+      <!-- add review form -->
+      <div class="form-title">
+        <i class="fas fa-pen" style="color: #1e5f9e;"></i> Write a review about this institute
+      </div>
+      <form id="reviewForm" class="review-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-user-graduate"></i> Your name</label>
+            <input type="text" id="reviewerName" placeholder="e.g. Aditya Kumar" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-star"></i> Rating</label>
+            <select id="reviewRating" required>
+              <option value="5">★★★★★ (5 - excellent)</option>
+              <option value="4">★★★★☆ (4 - great)</option>
+              <option value="3">★★★☆☆ (3 - average)</option>
+              <option value="2">★★☆☆☆ (2 - poor)</option>
+              <option value="1">★☆☆☆☆ (1 - very bad)</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label><i class="fas fa-comment-dots"></i> Your review</label>
+            <textarea id="reviewComment" rows="3" placeholder="Share your experience, facilities, faculty..."></textarea>
+          </div>
         </div>
-        <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Ask me anything...">
-            <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
+        <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit review</button>
+        <small class="form-hint" id="formFeedback"></small>
+      </form>
+    </section>
+  </div>
 
-    <footer>
-        <p>© 2026 Algorithm Avengers · Protecting the Campus Voice</p>
-    </footer>
+  <script>
+    (function() {
+      // ---------- MOCK INITIAL REVIEWS (institute details implicitly included) ----------
+      const initialReviews = [
+        {
+          name: "Ananya Shenoy",
+          rating: 5,
+          comment: "The campus is breathtaking — literally on the beach! Labs are world-class and the library is 24/7. Highly recommend CSE and Physics departments.",
+          date: "15 Mar 2025"
+        },
+        {
+          name: "Rohan Mehta",
+          rating: 4,
+          comment: "Great faculty and good placements. Hostel life is fun, but mess food can be improved. The central library is huge.",
+          date: "02 Feb 2025"
+        },
+        {
+          name: "Neha Sharma",
+          rating: 5,
+          comment: "I loved the innovation center and the open-air auditorium. The institute takes research seriously. Lots of fests and student clubs.",
+          date: "12 Jan 2025"
+        }
+      ];
 
-    <script>
-        // ---------- SIDEBAR TOGGLE ----------
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
+      // state: array of reviews (will be mutated)
+      let reviews = JSON.parse(JSON.stringify(initialReviews)); // clone
+
+      // DOM elements
+      const reviewsContainer = document.getElementById('reviewsListContainer');
+      const avgDisplaySpan = document.getElementById('avgDisplay');
+      const avgStarsSpan = document.getElementById('avgStars');
+      const reviewCountSpan = document.getElementById('reviewCountDisplay');
+      const form = document.getElementById('reviewForm');
+      const nameInput = document.getElementById('reviewerName');
+      const ratingSelect = document.getElementById('reviewRating');
+      const commentText = document.getElementById('reviewComment');
+      const formFeedback = document.getElementById('formFeedback');
+
+      // helper: generate star string (★/☆) from rating (1-5)
+      function getStarString(rating) {
+        const filled = '★'.repeat(rating);
+        const empty = '☆'.repeat(5 - rating);
+        return filled + empty;
+      }
+
+      // compute average rating
+      function computeAverage() {
+        if (reviews.length === 0) return 0;
+        const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+        return sum / reviews.length;
+      }
+
+      // update average display and star preview
+      function updateAverageDisplay() {
+        const avg = computeAverage();
+        avgDisplaySpan.textContent = avg.toFixed(1);
+        // show whole stars for average using floor (best representative)
+        const wholeStars = Math.floor(avg); 
+        const remainder = avg - wholeStars;
+        // we show stars as filled and half? not needed – just for vibe: show filled stars up to whole, rest empty, but keep numeric
+        // we'll show stars based on rounded average to nearest integer? but better use numeric + star style.
+        // create a star string based on rounded avg (half not shown, it's fine)
+        const rounded = Math.round(avg);
+        avgStarsSpan.textContent = getStarString(rounded); 
+        reviewCountSpan.textContent = `${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`;
+      }
+
+      // render all reviews inside container
+      function renderReviews() {
+        reviewsContainer.innerHTML = ''; // clear
+
+        if (reviews.length === 0) {
+          reviewsContainer.innerHTML = '<div class="empty-reviews"><i class="fas fa-smile-wink" style="font-size:2.5rem; opacity:0.5; margin-bottom:1rem; display:block;"></i>No reviews yet. Be the first to review this institute!</div>';
+        } else {
+          reviews.forEach(rev => {
+            // create card
+            const card = document.createElement('div');
+            card.className = 'review-card';
+
+            // reviewer row
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'reviewer-row';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'reviewer-name';
+            nameSpan.textContent = rev.name;
+
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'review-date';
+            dateSpan.textContent = rev.date;
+
+            rowDiv.appendChild(nameSpan);
+            rowDiv.appendChild(dateSpan);
+
+            // stars
+            const starsDiv = document.createElement('div');
+            starsDiv.className = 'review-stars';
+            starsDiv.textContent = getStarString(rev.rating); // e.g. ★★★★☆
+
+            // comment
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'review-comment';
+            commentDiv.textContent = rev.comment;
+
+            card.appendChild(rowDiv);
+            card.appendChild(starsDiv);
+            card.appendChild(commentDiv);
+
+            reviewsContainer.appendChild(card);
+          });
         }
 
-        // ---------- CHAT TOGGLE ----------
-        function toggleChat() {
-            document.getElementById('chatBox').classList.toggle('active');
+        // also update average header
+        updateAverageDisplay();
+      }
+
+      // add new review (push to array & re-render)
+      function addReview(name, rating, comment) {
+        const dateObj = new Date();
+        const formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/ /g, ' ');
+        // e.g. "7 Apr 2025"
+        
+        const newReview = {
+          name: name.trim(),
+          rating: rating,
+          comment: comment.trim(),
+          date: formattedDate
+        };
+        
+        reviews.unshift(newReview); // latest appears first
+        renderReviews();
+      }
+
+      // reset form fields
+      function resetForm() {
+        nameInput.value = '';
+        ratingSelect.value = '5';
+        commentText.value = '';
+        formFeedback.textContent = '';
+      }
+
+      // validation & form submit
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = nameInput.value.trim();
+        const rating = parseInt(ratingSelect.value, 10);
+        const comment = commentText.value.trim();
+
+        // reset feedback
+        formFeedback.textContent = '';
+
+        if (!name) {
+          formFeedback.textContent = '⚠️ Please enter your name';
+          nameInput.focus();
+          return;
+        }
+        if (!comment) {
+          formFeedback.textContent = '⚠️ Review comment cannot be empty';
+          commentText.focus();
+          return;
+        }
+        if (rating < 1 || rating > 5) {
+          formFeedback.textContent = '⚠️ Select a valid rating (1-5)';
+          return;
         }
 
-        // Quick ask (just closes chat as demo)
-        function quickAsk(topic) {
-            alert(`You asked about: ${topic} (demo action)`);
-            toggleChat(); // close chat after selection (optional)
-        }
+        // add review
+        addReview(name, rating, comment);
+        resetForm();
 
-        function sendChat() {
-            const input = document.getElementById('chatInput');
-            if(input.value.trim() !== '') {
-                alert(`Demo: your message "${input.value}" would be sent to AI.`);
-                input.value = '';
-                toggleChat(); // close after send (optional)
-            }
-        }
+        // little success feedback (disappear after 2s)
+        formFeedback.style.color = '#1d7a4e';
+        formFeedback.textContent = '✓ Review submitted! Thank you.';
+        setTimeout(() => {
+          formFeedback.textContent = '';
+          formFeedback.style.color = '#ba332b'; // revert
+        }, 2500);
+      });
 
-        // ---------- TAB SWITCHING (Schedule / Announcement / Events) ----------
-        function switchTab(tab) {
-            // Update active class on nav tabs
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-            event.target.closest('.nav-tab').classList.add('active');
-
-            // Show/hide sections
-            const scheduleSec = document.getElementById('scheduleSection');
-            const announcementSec = document.getElementById('announcementSection');
-            const eventsSec = document.getElementById('eventsSection');
-
-            if(tab === 'schedule') {
-                scheduleSec.style.display = 'block';
-                announcementSec.style.display = 'none';
-                eventsSec.style.display = 'none';
-            } else if(tab === 'announcement') {
-                scheduleSec.style.display = 'none';
-                announcementSec.style.display = 'block';
-                eventsSec.style.display = 'none';
-            } else if(tab === 'events') {
-                scheduleSec.style.display = 'none';
-                announcementSec.style.display = 'none';
-                eventsSec.style.display = 'block';
-            }
-        }
-
-        // ---------- CLOSE SIDEBAR WHEN CLICKING OUTSIDE ----------
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.querySelector('.menu-btn');
-            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
-                sidebar.classList.remove('active');
-            }
-        });
-
-        // Close chat when clicking outside (optional)
-        document.addEventListener('click', function(event) {
-            const chatBox = document.getElementById('chatBox');
-            const aiTrigger = document.querySelector('.ai-trigger');
-            if (!chatBox.contains(event.target) && !aiTrigger.contains(event.target)) {
-                chatBox.classList.remove('active');
-            }
-        });
-    </script>
+      // initial render
+      renderReviews();
+    })();
+  </script>
 </body>
 </html>
