@@ -274,44 +274,37 @@
         }
 
         /* ----- AI CHAT (floating, modern) ----- */
-        .ai-trigger {
+.ai-trigger {
             position: fixed;
-            right: 30px;
-            bottom: 30px;
-            width: 70px;
-            height: 70px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
             color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-            box-shadow: var(--shadow-xl);
+            padding: 15px 20px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: var(--transition);
-            z-index: 1500;
-            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-weight: bold;
+            z-index: 1000;
+        
         }
         .ai-trigger:hover {
-            transform: scale(1.1) rotate(10deg);
+            transform: scale(1.1) rotate(2deg);
             background: var(--primary-light);
         }
 
         .chat-box {
             position: fixed;
-            right: 30px;
-            bottom: 110px;
-            width: 360px;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
             background: white;
-            border-radius: 32px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-xl);
-            display: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none; /* Hidden by default */
             flex-direction: column;
             overflow: hidden;
-            z-index: 1501;
+            z-index: 1000;
         }
         .chat-box.active { display: flex; }
 
@@ -469,12 +462,12 @@
         <div style="margin-top: 40px;">
             <div class="info-grid">
                 <div class="info-card">
-                    <h3><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Announcements (5)</h3>
-                    <p>Latest campus updates and important notices</p>
+                    <h3><a href="#" class="nav-tab" onclick="switchTab('announcement'); return false;"><i class="fas fa-bullhorn" style="color: #0066FF;"></i> Announcements (5)</h3></a>
+                    <p><i class="fas fa-bullhorn" style="color: #0066FF;"></i>  Latest campus updates and important notices</p>
                 </div>
                 <div class="info-card">
-                    <h3><i class="fas fa-star" style="color: #0066FF;"></i> Events (3)</h3>
-                    <p>Upcoming workshops, seminars & celebrations</p>
+                    <h3><a href="#" class="nav-tab" onclick="switchTab('events'); return false;"><i class="fas fa-star" style="color: #0066FF;"></i> Events (3)</h3></a>
+                    <p><i class="fas fa-star" style="color: #0066FF;"></i>  Upcoming workshops, seminars & celebrations</p>
                 </div>
             </div>
         </div>
@@ -490,11 +483,15 @@
     </div>
 
     <!-- AI CHAT -->
-    <div class="ai-trigger" onclick="toggleChat()">AI</div>
+     <div class="ai-trigger" onclick="toggleChat()">
+        <i class="fas fa-robot"></i> Chat AI
+    </div>
+    
     <div class="chat-box" id="chatBox">
         <div class="chat-header">
             <span><i class="fas fa-robot" style="margin-right: 8px;"></i> Campus AI</span>
-            <span>🟢 Online</span>
+            <span>      🟢 Online </span>
+            <span style="cursor: pointer;" onclick="toggleChat()">✖</span>
         </div>
         <div class="chat-body">
             <div class="chat-hint" onclick="quickAsk('food')"><i class="fas fa-pizza-slice"></i> Need food delivery?</div>
@@ -524,19 +521,63 @@
         }
 
         // Quick ask (just closes chat as demo)
-        function quickAsk(topic) {
-            alert(`You asked about: ${topic} (demo action)`);
-            toggleChat(); // close chat after selection (optional)
-        }
+        // ---------- UPDATED CHAT LOGIC ----------
 
-        function sendChat() {
-            const input = document.getElementById('chatInput');
-            if(input.value.trim() !== '') {
-                alert(`Demo: your message "${input.value}" would be sent to AI.`);
-                input.value = '';
-                toggleChat(); // close after send (optional)
-            }
-        }
+async function askAI(message) {
+    const chatBody = document.querySelector('.chat-body');
+    
+    // 1. Add User Message to UI
+    const userDiv = document.createElement('div');
+    userDiv.style = "background: #eef5ff; padding: 10px; border-radius: 10px; margin-bottom: 10px; text-align: right;";
+    userDiv.innerHTML = `<strong>You:</strong> ${message}`;
+    chatBody.appendChild(userDiv);
+
+    try {
+        // 2. Send to Flask Backend
+        const response = await fetch('http://127.0.0.1:5000/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        });
+        const data = await response.json();
+
+        // 3. Add AI Response to UI
+        const aiDiv = document.createElement('div');
+        aiDiv.style = "background: #f1f1f1; padding: 10px; border-radius: 10px; margin-bottom: 10px;";
+        aiDiv.innerHTML = `<strong>AI:</strong> ${data.response}`;
+        chatBody.appendChild(aiDiv);
+        
+        // Scroll to bottom
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+    } catch (error) {
+        console.error("Error connecting to AI:", error);
+    }
+}
+
+function sendChat() {
+    const input = document.getElementById('chatInput');
+    if(input.value.trim() !== '') {
+        askAI(input.value);
+        input.value = '';
+    }
+}
+
+function quickAsk(topic) {
+    // Map the quick-click buttons to phrases your model understands
+    const topicMap = {
+        'food': 'I am hungry, where is the canteen?',
+        'medicine': 'I need a doctor, medical emergency',
+        'essentials': 'Where can I find daily essentials?',
+        'help': 'I need campus help'
+    };
+    askAI(topicMap[topic] || topic);
+}
+
+// Allow "Enter" key to send message
+document.getElementById('chatInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') sendChat();
+});
 
         // ---------- TAB SWITCHING (Schedule / Announcement / Events) ----------
         function switchTab(tab) {
