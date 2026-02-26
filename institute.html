@@ -1,277 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A.T.P Campus Hub | Smart Institute Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATP Campus Hub · Smart Institute Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ----- DESIGN SYSTEM ----- */
+        :root {
+            --primary: #0066FF;
+            --primary-light: #3385ff;
+            --secondary: #f8fdfd;
+            --bg: #f5f7f8;
+            --text: #1a2736;
+            --text-secondary: #19333c;
+            --card: #FFFFFF;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 40px rgba(0, 102, 255, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --red-accent: #f90101;
+            --green-accent: #10b981;
+        }
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
 
-  <style>
-    :root {
-      --primary-blue: #003366;
-      --secondary-blue: #0056b3;
-      --light-bg: #f4f7f6;
-      --white: #ffffff;
-      --accent: #ff9800;
-    }
+        /* ----- HEADER ----- */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 5%;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+        .logo .red { color: var(--red-accent); }
+        .logo .blue { color: var(--primary); }
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--light-bg);
-      color: #333;
-    }
+        .menu-btn {
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            background: white;
+            border: 1px solid var(--border);
+        }
+        .menu-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: rotate(90deg);
+        }
 
-    /* ================= HEADER ================= */
-    header {
-      background: var(--primary-blue);
-      color: white;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+        /* ----- NAV TABS ----- */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 5%;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
 
-    .logo a {
-      text-decoration: none;
-      color: white;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
+        .nav-tab {
+            padding: 10px 28px;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-tab:hover {
+            border-color: var(--primary);
+            background: #eef5ff;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .nav-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
 
-    .menu-btn {
-      font-size: 26px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
+        /* ----- MAIN CONTENT ----- */
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+            flex: 1;
+            width: 100%;
+        }
 
-    /* ================= SIDEBAR ================= */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      right: 0;
-      background: var(--primary-blue);
-      overflow-x: hidden;
-      transition: 0.4s;
-      padding-top: 60px;
-      z-index: 1000;
-    }
+        .welcome-hero {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .hero-banner {
+            width: 100%;
+            height: 200px;
+            border-radius: 24px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1523050853061-85e8398c7f6f?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            margin-bottom: -60px;
+            z-index: -1;
+            position: relative;
+        }
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+            background: var(--card);
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+        }
+        .welcome-title span {
+            background: linear-gradient(135deg, var(--primary) 0%, #3385ff 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .welcome-hero p {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-top: 10px;
+            font-weight: 500;
+        }
 
-    .sidebar a {
-      padding: 15px 25px;
-      display: block;
-      text-decoration: none;
-      font-size: 18px;
-      color: #ddd;
-      transition: 0.3s;
-    }
+        /* ----- INFO CARDS ----- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .sidebar a:hover {
-      color: var(--accent);
-      background: rgba(255,255,255,0.05);
-    }
+        .info-card {
+            background: var(--card);
+            padding: 32px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text);
+        }
+        .info-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
+        }
+        .info-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            background: #eef5ff;
+            padding: 20px;
+            border-radius: 50%;
+        }
+        .info-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        /* Action buttons specific styling */
+        .action-card.review:hover { border-color: var(--green-accent); box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15); }
+        .action-card.review i { color: var(--green-accent); background: #ecfdf5; }
+        .action-card.complaint:hover { border-color: var(--red-accent); box-shadow: 0 20px 40px rgba(249, 1, 1, 0.15); }
+        .action-card.complaint i { color: var(--red-accent); background: #fef2f2; }
 
-    .sidebar .close-btn {
-      font-size: 32px;
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      cursor: pointer;
-    }
+        /* ----- SIDEBAR ----- */
+        .sidebar {
+            position: fixed;
+            left: -340px;
+            top: 0;
+            width: 320px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            padding: 32px 24px;
+        }
+        .sidebar.active { left: 0; }
 
-    /* ================= MAIN CONTAINER ================= */
-    .container {
-      max-width: 1000px;
-      margin: 25px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
+        .sidebar-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .sidebar-close:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
 
-    .institute-header {
-      text-align: center;
-      border: 2px solid var(--primary-blue);
-      padding: 12px;
-      border-radius: 6px;
-      margin-bottom: 20px;
-    }
+        .sidebar h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: var(--text);
+        }
+        .sidebar h3 i { color: var(--primary); margin-right: 10px; }
 
-    /* ================= HERO IMAGE ================= */
-    .hero-image {
-      width: 100%;
-      height: 300px;
-      border-radius: 6px;
-      background: url('https://images.unsplash.com/photo-1523050853061-85e8398c7f6f?auto=format&fit=crop&w=1000&q=80')
-                  center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.8);
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .sidebar-item i { width: 24px; color: var(--primary); text-align: center; }
+        .sidebar-item:hover { color: var(--primary); padding-left: 8px; }
 
-    /* ================= ACTION BUTTONS ================= */
-    .action-row {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+        /* ----- AI CHAT ----- */
+        .ai-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,102,255,0.4);
+            font-weight: bold;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        .ai-trigger:hover {
+            transform: scale(1.05) translateY(-5px);
+            background: var(--primary-light);
+        }
 
-    .btn {
-      flex: 1;
-      padding: 14px;
-      text-align: center;
-      border-radius: 6px;
-      font-weight: bold;
-      text-decoration: none;
-      color: white;
-      transition: 0.3s;
-    }
+        .chat-box {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            border: 1px solid var(--border);
+        }
+        .chat-box.active { display: flex; }
 
-    .btn-review {
-      background: #4caf50;
-    }
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px 24px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header span { font-size: 0.85rem; font-weight: normal; }
 
-    .btn-complaint {
-      background: #f44336;
-    }
+        .chat-body {
+            padding: 20px;
+            max-height: 320px;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+        .chat-hint {
+            background: white;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .chat-hint i { color: var(--primary); }
+        .chat-hint:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
+        .chat-input-area {
+            display: flex;
+            padding: 16px;
+            background: white;
+            border-top: 1px solid var(--border);
+        }
+        .chat-input-area input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 12px 16px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+        .chat-input-area input:focus { border-color: var(--primary); }
+        .chat-input-area button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 0 20px;
+            margin-left: 10px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .chat-input-area button:hover { background: var(--primary-light); }
 
-    /* ================= FEATURES ================= */
-    .features-section {
-      border-top: 2px dashed #ccc;
-      padding-top: 20px;
-    }
+        footer {
+            text-align: center;
+            padding: 30px 24px;
+            color: #94a3b8;
+            font-weight: 500;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
 
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .feature-card {
-      background: #f9f9f9;
-      padding: 18px;
-      text-align: center;
-      border-radius: 8px;
-      border-left: 4px solid var(--secondary-blue);
-      transition: 0.3s;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    }
-
-    .feature-card i {
-      font-size: 30px;
-      color: var(--secondary-blue);
-      margin-bottom: 10px;
-    }
-  </style>
+        @media (max-width: 700px) {
+            .welcome-title { font-size: 1.8rem; padding: 15px 20px; }
+            .hero-banner { height: 150px; }
+            .chat-box { width: 300px; right: 15px; }
+        }
+    </style>
 </head>
-
 <body>
 
-  <!-- SIDEBAR -->
-  <div id="sidebar" class="sidebar">
-    <span class="close-btn" onclick="closeNav()">&times;</span>
-    <a href="#"><i class="fas fa-user-graduate"></i> Student Details</a>
-    <a href="#"><i class="fas fa-user-tie"></i> Official Management</a>
-    <a href="#"><i class="fas fa-bullhorn"></i> Upload Notice</a>
-    <a href="#"><i class="fas fa-chalkboard-teacher"></i> Classes</a>
-  </div>
+    <header>
+        <a href="index.html" class="logo">
+            <span class="red">ATP</span> <span class="blue">Campus Hub</span>
+        </a>
+        <div class="menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <a href="index.html">A.T.P Campus Hub</a>
+    <nav class="nav-tabs">
+        <a href="#" class="nav-tab active" onclick="switchTab('students'); return false;"><i class="fas fa-book-reader"></i> Student Services</a>
+        <a href="#" class="nav-tab" onclick="switchTab('courses'); return false;"><i class="fas fa-graduation-cap"></i> Courses</a>
+        <a href="#" class="nav-tab" onclick="switchTab('actions'); return false;"><i class="fas fa-bolt"></i> Quick Actions</a>
+    </nav>
+
+    <main>
+        <div class="welcome-hero">
+            <div class="hero-banner"></div>
+            <h1 class="welcome-title">Government College of Engineering and  <span>Leather Technology</span></h1>
+            <p>Smart Campus Portal & Overview</p>
+        </div>
+
+        <div id="studentsSection">
+            <div class="info-grid">
+                <div class="info-card"><i class="fas fa-file-invoice-dollar"></i><h3>Online Fee Payment</h3></div>
+                <div class="info-card"><i class="fas fa-clipboard-list"></i><h3>Attendance Tracking</h3></div>
+                <div class="info-card"><i class="fas fa-graduation-cap"></i><h3>Exam & Reports</h3></div>
+                <div class="info-card"><i class="fas fa-bus"></i><h3>Transport GPS</h3></div>
+                <div class="info-card"><i class="fas fa-tasks"></i><h3>Homework & LMS</h3></div>
+                <div class="info-card"><i class="fas fa-comments"></i><h3>Parent-Teacher Chat</h3></div>
+            </div>
+        </div>
+
+        <div id="coursesSection" style="display: none;">
+            <div class="info-grid">
+                <div class="info-card"><i class="fas fa-laptop-code"></i><h3>Computer Science</h3></div>
+                <div class="info-card"><i class="fas fa-network-wired"></i><h3>Information Technology</h3></div>
+                <div class="info-card"><i class="fas fa-square-root-alt"></i><h3>Mathematics & Comp</h3></div>
+                <div class="info-card"><i class="fas fa-sitemap"></i><h3>Data Structures</h3></div>
+                <div class="info-card"><i class="fas fa-paint-brush"></i><h3>Design & Graphics</h3></div>
+                <div class="info-card"><i class="fas fa-flask"></i><h3>Chemistry</h3></div>
+            </div>
+        </div>
+
+        <div id="actionsSection" style="display: none;">
+            <div class="info-grid">
+                <a href="review.html" class="info-card action-card review">
+                    <i class="fas fa-star"></i>
+                    <h3>Submit a Review</h3>
+                    <p style="color: #64748b; margin-top: 10px; font-weight: normal;">Rate your campus experience</p>
+                </a>
+                <a href="#" class="info-card action-card complaint">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Lodge Complaint</h3>
+                    <p style="color: #64748b; margin-top: 10px; font-weight: normal;">Report issues anonymously</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <h3><i class="fas fa-university"></i> Portal Menu</h3>
+        <a href="#" class="sidebar-item"><i class="fas fa-user-graduate"></i> Student Details</a>
+        <a href="#" class="sidebar-item"><i class="fas fa-user-tie"></i> Official Management</a>
+        <a href="#" class="sidebar-item"><i class="fas fa-bullhorn"></i> Upload Notice</a>
+        <a href="#" class="sidebar-item"><i class="fas fa-chalkboard-teacher"></i> Classes</a>
     </div>
-    <button class="menu-btn" onclick="openNav()">&#9776;</button>
-  </header>
 
-  <!-- MAIN -->
-  <div class="container">
-
-    <div class="institute-header">
-      <h1>Engineering Institute of Technology</h1>
+    <div class="ai-trigger" onclick="toggleChat()">
+        <i class="fas fa-robot"></i> Chat AI
+    </div>
+    
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <span><i class="fas fa-robot" style="margin-right: 8px;"></i> Campus AI</span>
+            <span style="cursor: pointer;" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chat-body">
+            <div class="chat-hint" onclick="quickAsk('food')"><i class="fas fa-pizza-slice"></i> Need food delivery?</div>
+            <div class="chat-hint" onclick="quickAsk('medicine')"><i class="fas fa-pills"></i> Medicine required?</div>
+            <div class="chat-hint" onclick="quickAsk('essentials')"><i class="fas fa-shopping-bag"></i> Daily essentials?</div>
+            <div class="chat-hint" onclick="quickAsk('help')"><i class="fas fa-question-circle"></i> Campus help?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ask me anything...">
+            <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+        </div>
     </div>
 
-    <div class="hero-image">
-      Campus Overview
-    </div>
+    <footer>
+        <p>© 2026 Algorithm Avengers · Protecting the Campus Voice</p>
+    </footer>
 
-    <div class="action-row">
-      <a href="#" class="btn btn-review" id="reviewBtn">
-        <i class="fas fa-star"></i> Reviews
-      </a>
-      <a href="#" class="btn btn-complaint">
-        <i class="fas fa-exclamation-triangle"></i> Complaints
-      </a>
-    </div>
+    <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
 
-    <div class="features-section">
-      <h3><i class="fas fa-book-reader"></i> Students </h3>
-      <div class="feature-grid">
-        <div class="feature-card"><i class="fas fa-file-invoice-dollar"></i><p>Online Fee Payment</p></div>
-        <div class="feature-card"><i class="fas fa-clipboard-list"></i><p>Attendance Tracking</p></div>
-        <div class="feature-card"><i class="fas fa-graduation-cap"></i><p>Exam & Reports</p></div>
-        <div class="feature-card"><i class="fas fa-bus"></i><p>Transport GPS</p></div>
-        <div class="feature-card"><i class="fas fa-tasks"></i><p>Homework & LMS</p></div>
-        <div class="feature-card"><i class="fas fa-comments"></i><p>Parent-Teacher Chat</p></div>
-      </div>
-    </div>
+        // Chat Toggle
+        function toggleChat() {
+            document.getElementById('chatBox').classList.toggle('active');
+        }
 
-    <div class="features-section">
-  <h3><i class="fas fa-book-reader"></i> Courses </h3>
-  <div class="feature-grid">
-    <div class="feature-card"><i class="fas fa-laptop-code"></i><p>Computer Science</p></div>
-    <div class="feature-card"><i class="fas fa-network-wired"></i><p>Information Technology</p></div>
-    <div class="feature-card"><i class="fas fa-square-root-alt"></i><p>Mathematics & Computation</p></div>
-    <div class="feature-card"><i class="fas fa-sitemap"></i><p>Data Structures</p></div>
-    <div class="feature-card"><i class="fas fa-paint-brush"></i><p>Design & Graphics</p></div>
-    <div class="feature-card"><i class="fas fa-flask"></i><p>Chemistry</p></div>
-  </div>
-</div>
-</div>
+        // Tab Switching Logic
+        function switchTab(tab) {
+            // Update active class on nav tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
 
-  </div>
+            // Show/hide sections
+            const studentsSec = document.getElementById('studentsSection');
+            const coursesSec = document.getElementById('coursesSection');
+            const actionsSec = document.getElementById('actionsSection');
 
-  <!-- JS -->
-  <script>
-    function openNav() {
-      document.getElementById("sidebar").style.width = "260px";
-    }
+            studentsSec.style.display = 'none';
+            coursesSec.style.display = 'none';
+            actionsSec.style.display = 'none';
 
-    function closeNav() {
-      document.getElementById("sidebar").style.width = "0";
-    }
+            if(tab === 'students') studentsSec.style.display = 'block';
+            if(tab === 'courses') coursesSec.style.display = 'block';
+            if(tab === 'actions') actionsSec.style.display = 'block';
+        }
 
-    document.getElementById("reviewBtn").addEventListener("click", function(e) {
-      e.preventDefault();
-      alert("Redirecting to Review Portal...");
-    });
-  </script>
+        // Close sidebar/chat when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
 
+            const chatBox = document.getElementById('chatBox');
+            const aiTrigger = document.querySelector('.ai-trigger');
+            if (!chatBox.contains(event.target) && !aiTrigger.contains(event.target)) {
+                chatBox.classList.remove('active');
+            }
+        });
+
+        // Review Button Alert (Ported from original)
+        document.getElementById("reviewBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            alert("Redirecting to Review Portal...");
+        });
+
+        // Original AI Logic from Target Template
+        async function askAI(message) {
+            const chatBody = document.querySelector('.chat-body');
+            
+            const userDiv = document.createElement('div');
+            userDiv.style = "background: #eef5ff; padding: 10px; border-radius: 12px; margin-bottom: 10px; text-align: right; font-size: 0.9rem;";
+            userDiv.innerHTML = `<strong>You:</strong> ${message}`;
+            chatBody.appendChild(userDiv);
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await response.json();
+
+                const aiDiv = document.createElement('div');
+                aiDiv.style = "background: white; border: 1px solid var(--border); padding: 10px; border-radius: 12px; margin-bottom: 10px; font-size: 0.9rem;";
+                aiDiv.innerHTML = `<strong>AI:</strong> ${data.response}`;
+                chatBody.appendChild(aiDiv);
+                
+                chatBody.scrollTop = chatBody.scrollHeight;
+            } catch (error) {
+                console.error("Error connecting to AI:", error);
+            }
+        }
+
+        function sendChat() {
+            const input = document.getElementById('chatInput');
+            if(input.value.trim() !== '') {
+                askAI(input.value);
+                input.value = '';
+            }
+        }
+
+        function quickAsk(topic) {
+            const topicMap = {
+                'food': 'I am hungry, where is the canteen?',
+                'medicine': 'I need a doctor, medical emergency',
+                'essentials': 'Where can I find daily essentials?',
+                'help': 'I need campus help'
+            };
+            askAI(topicMap[topic] || topic);
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendChat();
+        });
+    </script>
 </body>
 </html>

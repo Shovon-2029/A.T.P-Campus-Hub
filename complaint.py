@@ -1,61 +1,106 @@
-from fastapi import FastAPI, HTTPException
+import uvicorn
+from fastapi import FastAPI, HTTPException, Form, File, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from typing import Optional
 import random
-import string
+import json
+import os
+import shutil
 from datetime import datetime
 
 app = FastAPI()
 
-# Allow frontend to communicate with backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, replace "*" with your frontend domain
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# In-memory database for demonstration (resets when server restarts)
-complaints_db = {}
+DATA_FILE = 'complaints_data.json'
+UPLOAD_DIR = 'uploads'
 
-# Define the expected data format from the frontend
-class Complaint(BaseModel):
-    title: str
-    category: str
-    description: str
-    is_anonymous: bool
+# Ensure the uploads directory exists
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+
+# Self-healing database loader
+def load_db():
+    if not os.path.exists(DATA_FILE):
+        return {}
+    try:
+        with open(DATA_FILE, 'r') as f:
+            data = json.load(f)
+            if isinstance(data, dict):
+                return data
+            return {}
+    except:
+        return {}
+
+def save_db(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
 
 def generate_tracking_id():
-    """Generate a random 12-character alphanumeric tracking ID"""
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+    return f"CW-2026-{random.randint(1000, 9999)}"
+
+@app.get("/")
+async def serve_home():
+    return FileResponse('complaint.html')
 
 @app.post("/api/complaints")
-async def submit_complaint(complaint: Complaint):
-    tracking_id = generate_tracking_id()
-    
-    # Save to mock database
-    complaints_db[tracking_id] = {
-        "title": complaint.title,
-        "category": complaint.category,
-        "description": complaint.description,
-        "is_anonymous": complaint.is_anonymous,
-        "status": "Pending Investigation",
-        "date_submitted": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
-    
-    return {"message": "Success", "tracking_id": tracking_id}
+async def submit_complaint(
+    category: str = Form(...),
+    incident_date: str = Form(...),
+    description: str = Form(...),
+    evidence: Optional[UploadFile] = File(None) # Bulletproof file typing
+):
+    try:
+        db = load_db()
+        
+        tracking_id = generate_tracking_id()
+        while tracking_id in db:
+            tracking_id = generate_tracking_id()
+            
+        saved_filename = "No file attached"
+        
+        # If the user uploaded a file, save it safely
+        if evidence and evidence.filename:
+            file_extension = evidence.filename.split('.')[-1]
+            saved_filename = f"{tracking_id}_evidence.{file_extension}"
+            file_path = os.path.join(UPLOAD_DIR, saved_filename)
+            
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(evidence.file, buffer)
+        
+        # Save all data to JSON
+        db[tracking_id] = {
+            "category": category,
+            "incident_date": incident_date,
+            "description": description,
+            "evidence_file": saved_filename,
+            "status": "Investigation in Progress",
+            "date_submitted": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        save_db(db)
+        return {"message": "Success", "tracking_id": tracking_id}
+        
+    except Exception as e:
+        # If it crashes, print the EXACT reason to the terminal!
+        print(f"\n❌ CRASH REPORT: {str(e)}\n")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/complaints/{tracking_id}")
 async def track_complaint(tracking_id: str):
-    # Lookup complaint by ID
-    complaint = complaints_db.get(tracking_id.upper())
+    db = load_db()
+    complaint = db.get(tracking_id.upper())
     
     if not complaint:
         raise HTTPException(status_code=404, detail="Invalid tracking ID or complaint not found.")
-        
     return complaint
 
 if __name__ == "__main__":
-    import uvicorn
-    # Run the server on port 8000
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    print("SERVER RUNNING! Open http://127.0.0.1:9000 in your browser.")
+    uvicorn.run(app, host="127.0.0.1", port=9000)

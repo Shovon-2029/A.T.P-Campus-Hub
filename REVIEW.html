@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Portal · Reviews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066FF;
+            --bg: #f5f7f8;
+            --text: #1a2736;
+            --text-secondary: #64748b;
+            --card: #FFFFFF;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --star: #f5b342;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Summary */
+        .stats-summary {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-box .label { color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-box .value { font-size: 2.5rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .stat-box .stars { color: var(--star); font-size: 1.5rem; letter-spacing: 2px; }
+
+        /* Reviews List */
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .review-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+        .review-card:hover {
+            border-color: #b9d1ec;
+            box-shadow: 0 10px 22px -10px rgba(0, 102, 255, 0.15);
+        }
+
+        .reviewer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 0.8rem;
+        }
+        .reviewer-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .review-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .review-stars {
+            color: var(--star);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+        
+        .review-comment {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--card);
+            border-radius: 20px;
+            border: 1px dashed #cbd5e1;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .stats-summary { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .reviewer-info { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <div class="dashboard-header">
+            <h1><i class="fas fa-chart-pie" style="color: var(--primary);"></i> Organizer Dashboard</h1>
+            <a href="institute.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Institute Dashboard</a>
+        </div>
+
+        <div class="stats-summary">
+            <div class="stat-box">
+                <span class="label">Total Reviews</span>
+                <span class="value" id="totalCountDisplay">0</span>
+            </div>
+            <div class="stat-box" style="border-left: 1px solid var(--border); padding-left: 2rem;">
+                <span class="label">Average Rating</span>
+                <span class="value">
+                    <span id="avgScoreDisplay">0.0</span>
+                    <span class="stars" id="avgStarsDisplay">☆☆☆☆☆</span>
+                </span>
+            </div>
+        </div>
+
+        <div id="reviewsListContainer" class="reviews-list">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                Loading reviews from server...
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let reviews = [];
+
+            const reviewsContainer = document.getElementById('reviewsListContainer');
+            const totalCountDisplay = document.getElementById('totalCountDisplay');
+            const avgScoreDisplay = document.getElementById('avgScoreDisplay');
+            const avgStarsDisplay = document.getElementById('avgStarsDisplay');
+
+            // Utility function to generate stars
+            function getStarString(rating) {
+                return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+            }
+
+            // Calculate and update top statistics
+            function updateStats() {
+                totalCountDisplay.textContent = reviews.length;
+
+                if (reviews.length === 0) {
+                    avgScoreDisplay.textContent = "0.0";
+                    avgStarsDisplay.textContent = "☆☆☆☆☆";
+                    return;
+                }
+
+                const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+                const avg = sum / reviews.length;
+                
+                avgScoreDisplay.textContent = avg.toFixed(1);
+                avgStarsDisplay.textContent = getStarString(Math.round(avg));
+            }
+
+            // Render the reviews into the DOM
+            function renderReviews() {
+                reviewsContainer.innerHTML = ''; 
+
+                if (reviews.length === 0) {
+                    reviewsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            No reviews have been submitted yet.
+                        </div>`;
+                } else {
+                    reviews.forEach(rev => {
+                        const card = document.createElement('div');
+                        card.className = 'review-card';
+                        card.innerHTML = `
+                            <div class="reviewer-info">
+                                <span class="reviewer-name"><i class="fas fa-user-circle" style="color: #94a3b8;"></i> ${rev.name}</span>
+                                <span class="review-date">${rev.date}</span>
+                            </div>
+                            <div class="review-stars">${getStarString(rev.rating)}</div>
+                            <div class="review-comment">${rev.comment}</div>
+                        `;
+                        reviewsContainer.appendChild(card);
+                    });
+                }
+                updateStats();
+            }
+
+            // Fetch reviews from Flask backend
+            async function fetchReviews() {
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/reviews'); 
+                    if (!response.ok) throw new Error("Server not responding correctly");
+                    
+                    reviews = await response.json();
+                    renderReviews();
+
+                } catch (error) {
+                    console.error("Error loading reviews:", error);
+                    reviewsContainer.innerHTML = `
+                        <div class="empty-state" style="color: #ef4444; border-color: #fca5a5; background: #fef2f2;">
+                            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+                            Could not connect to the database.<br>
+                            <small>Ensure your Python Flask server is running at http://127.0.0.1:5000</small>
+                        </div>`;
+                }
+            }
+
+            // Initial load
+            fetchReviews();
+        });
+    </script>
+</body>
+</html>

@@ -36,7 +36,6 @@
             min-height: 100vh;
         }
 
-        /* ----- NAV BALANCING ----- */
         header {
             position: sticky;
             top: 0;
@@ -50,63 +49,26 @@
             z-index: 1000;
         }
 
-        .brand h2 {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--accent-red);
-            letter-spacing: -0.5px;
-        }
-
-        .brand span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        .brand h2 { font-size: 1.4rem; font-weight: 800; color: var(--accent-red); letter-spacing: -0.5px; }
+        .brand span { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 
         nav ul { display: flex; list-style: none; background: #f1f5f9; padding: 4px; border-radius: 100px; }
         
         nav a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 0.8rem;
-            padding: 8px 20px;
-            border-radius: 100px;
-            transition: var(--transition);
+            text-decoration: none; color: var(--text-muted); font-weight: 700; font-size: 0.8rem;
+            padding: 8px 20px; border-radius: 100px; transition: var(--transition);
         }
 
-        nav a.active {
-            background: var(--card);
-            color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
+        nav a.active { background: var(--card); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
-        /* ----- SLIDING ENGINE ----- */
-        .main-wrapper {
-            max-width: 700px; /* Narrower for better focus */
-            margin: 40px auto;
-            flex: 1;
-            width: 95%;
-            overflow: hidden;
-        }
-
-        .sections-container {
-            display: flex;
-            width: 200%;
-            transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
+        .main-wrapper { max-width: 700px; margin: 40px auto; flex: 1; width: 95%; overflow: hidden; }
+        .sections-container { display: flex; width: 200%; transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
         section { width: 50%; padding: 0 10px; }
         .show-track .sections-container { transform: translateX(-50%); }
 
-        /* ----- UI SHAPE & SIZE ----- */
         .form-card {
-            background: var(--card);
-            padding: 40px 45px;
-            border-radius: var(--radius-xl);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            background: var(--card); padding: 40px 45px; border-radius: var(--radius-xl);
+            border: 1px solid var(--border); box-shadow: var(--shadow);
         }
 
         .section-header { margin-bottom: 30px; text-align: center; }
@@ -117,108 +79,61 @@
         .full { grid-column: span 2; }
 
         .form-group label {
-            display: block;
-            font-weight: 700;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: block; font-weight: 700; font-size: 0.8rem; margin-bottom: 8px;
+            color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         input, select, textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            font-family: inherit;
-            font-size: 0.95rem;
-            background: #fff;
-            transition: var(--transition);
+            width: 100%; padding: 12px 16px; border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg); font-family: inherit; font-size: 0.95rem;
+            background: #fff; transition: var(--transition);
         }
 
         input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-soft);
+            outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft);
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: var(--radius-lg);
-            font-weight: 800;
-            font-size: 0.95rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: var(--transition);
+            background: var(--primary); color: white; border: none; padding: 15px;
+            border-radius: var(--radius-lg); font-weight: 800; font-size: 0.95rem;
+            cursor: pointer; width: 100%; margin-top: 10px; display: flex;
+            align-items: center; justify-content: center; gap: 10px; transition: var(--transition);
         }
 
         .btn-primary:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
+            filter: brightness(1.1); transform: translateY(-2px);
             box-shadow: 0 10px 20px -5px rgba(0, 102, 255, 0.4);
         }
 
-        /* ----- FILE INPUT STYLING ----- */
         .file-box {
-            border: 2px dashed var(--border);
-            padding: 15px;
-            border-radius: var(--radius-lg);
-            text-align: center;
-            transition: var(--transition);
+            border: 2px dashed var(--border); padding: 15px; border-radius: var(--radius-lg);
+            text-align: center; transition: var(--transition);
         }
         .file-box:hover { border-color: var(--primary); background: var(--primary-soft); }
 
-        /* ----- MODAL BALANCE ----- */
         .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(6px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px); z-index: 2000; align-items: center; justify-content: center;
         }
 
         .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 35px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            background: white; padding: 40px; border-radius: 35px; max-width: 400px;
+            width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
             animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
         .token-display {
-            background: var(--primary-soft);
-            border: 2px solid var(--primary);
-            padding: 15px;
-            border-radius: var(--radius-lg);
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 20px 0;
-            letter-spacing: 2px;
+            background: var(--primary-soft); border: 2px solid var(--primary); padding: 15px;
+            border-radius: var(--radius-lg); font-size: 1.4rem; font-weight: 800;
+            color: var(--primary); margin: 20px 0; letter-spacing: 2px;
         }
 
         footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.85rem; }
 
         @media (max-width: 650px) {
-            .grid { grid-template-columns: 1fr; }
-            .full { grid-column: span 1; }
+            .grid { grid-template-columns: 1fr; } .full { grid-column: span 1; }
             header { flex-direction: column; padding: 1.5rem; gap: 15px; }
             .form-card { padding: 30px 20px; }
         }
@@ -250,11 +165,11 @@
                         <h3>Lodge Grievance</h3>
                         <p>Your identity is protected by end-to-end encryption.</p>
                     </div>
-                    <form id="gForm">
+                    <form id="gForm" onsubmit="event.preventDefault();">
                         <div class="grid">
                             <div class="form-group full">
                                 <label>Category</label>
-                                <select required>
+                                <select id="cat" required>
                                     <option value="">Select issue type...</option>
                                     <option>Academic</option>
                                     <option>Hostel</option>
@@ -265,20 +180,20 @@
                             </div>
                             <div class="form-group full">
                                 <label>Incident Date</label>
-                                <input type="date" required>
+                                <input type="date" id="inc_date" required>
                             </div>
                             <div class="form-group full">
                                 <label>Description</label>
-                                <textarea rows="3" placeholder="Explain what happened..."></textarea>
+                                <textarea id="desc" rows="3" placeholder="Explain what happened..." required></textarea>
                             </div>
                             <div class="form-group full">
                                 <label>Evidence (Max 10MB)</label>
                                 <div class="file-box">
-                                    <input type="file" style="border:none; background:transparent; padding:1;">
+                                    <input type="file" id="evid" accept="image/*,.pdf" style="border:none; background:transparent; padding:1;">
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary">
+                        <button type="button" class="btn-primary" onclick="submitGrievance()">
                             <i class="fas fa-paper-plane"></i> SUBMIT REPORT
                         </button>
                     </form>
@@ -295,14 +210,14 @@
                         <label>Enter Grievance ID</label>
                         <input type="text" id="trkIn" placeholder="CW-2026-XXXX">
                     </div>
-                    <button class="btn-primary" onclick="doTrack()">
+                    <button type="button" class="btn-primary" onclick="doTrack()">
                         <i class="fas fa-search"></i> VIEW UPDATES
                     </button>
 
                     <div id="res" style="display:none; margin-top:25px; padding: 20px; background: #f1f5f9; border-radius: 18px; border-left: 5px solid var(--primary);">
                         <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">Current Phase</span>
-                        <p style="font-weight: 700; font-size: 1.1rem; margin-top: 5px;">Investigation in Progress</p>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;"><i class="fas fa-history"></i> Last updated: 2 hours ago</p>
+                        <p style="font-weight: 700; font-size: 1.1rem; margin-top: 5px;" id="trkStatus">Investigation in Progress</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;"><i class="fas fa-history"></i> Last updated: just now</p>
                     </div>
                 </div>
             </section>
@@ -316,7 +231,7 @@
             <h3 style="font-size: 1.4rem;">Report Received</h3>
             <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">Save this ID to track your complaint. It won't be shown again.</p>
             <div class="token-display" id="genId">CW-2026-4492</div>
-            <button class="btn-primary" onclick="hideMod()">COPY & CLOSE</button>
+            <button type="button" class="btn-primary" id="copyBtn" onclick="copyAndClose()">COPY & CLOSE</button>
         </div>
     </div>
 
@@ -340,25 +255,97 @@
             }
         }
 
-        document.getElementById('gForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const id = "CW-2026-" + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('genId').innerText = id;
-            document.getElementById('mod').style.display = 'flex';
-        });
+        // 1. Submit Complaint (Refresh-Proof Version)
+        function submitGrievance() {
+            const form = document.getElementById('gForm');
+            
+            // Manually check if required fields are filled
+            if (!document.getElementById('cat').value || !document.getElementById('inc_date').value || !document.getElementById('desc').value) {
+                alert("Please fill in all required fields (Category, Date, Description).");
+                return;
+            }
 
-        function hideMod() {
+            // Build FormData
+            const formData = new FormData();
+            formData.append('category', document.getElementById('cat').value);
+            formData.append('incident_date', document.getElementById('inc_date').value);
+            formData.append('description', document.getElementById('desc').value);
+
+            const fileInput = document.getElementById('evid');
+            if (fileInput.files.length > 0) {
+                formData.append('evidence', fileInput.files[0]);
+            }
+
+            // Send data to Python
+            fetch('http://127.0.0.1:9000/api/complaints', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => {
+                if(!res.ok) throw new Error("Server error");
+                return res.json();
+            })
+            .then(data => {
+                // Show modal, freeze screen
+                document.getElementById('genId').innerText = data.tracking_id;
+                document.getElementById('mod').style.display = 'flex';
+            })
+            .catch(err => {
+                alert("Error submitting complaint. Check your python terminal.");
+            });
+        }
+
+        // 2. Copy ID and Close Modal
+       // 2a. ONLY Copies the ID (Does not close the modal)
+        function copyIdOnly() {
+            const trackingId = document.getElementById('genId').innerText;
+            const btn = document.getElementById('copyBtn');
+            
+            navigator.clipboard.writeText(trackingId).then(() => {
+                // Change button to green "COPIED!"
+                btn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
+                btn.style.background = '#10b981';
+                
+                // NO TIMER HERE! The popup stays exactly where it is.
+            }).catch(err => {
+                alert("Clipboard access blocked. Please highlight the ID and copy it manually.");
+            });
+        }
+
+        // 2b. ONLY Closes the modal when YOU click "CLOSE"
+        function closeModalOnly() {
             document.getElementById('mod').style.display = 'none';
             document.getElementById('gForm').reset();
+            
+            // Clear memory if you are using the freeze hack
+            sessionStorage.removeItem('frozenTrackingId');
+            
+            // Reset the copy button back to normal for the next person
+            const btn = document.getElementById('copyBtn');
+            btn.innerHTML = '<i class="fas fa-copy"></i> COPY ID';
+            btn.style.background = 'var(--primary)';
+            
             setView('reg');
         }
 
+        // 3. Track Complaint
         function doTrack() {
-            if(document.getElementById('trkIn').value) {
-                document.getElementById('res').style.display = 'block';
-            } else {
+            const trkId = document.getElementById('trkIn').value;
+            if(!trkId) {
                 alert("Please enter a valid ID");
+                return;
             }
+
+            fetch(`http://127.0.0.1:9000/api/complaints/${trkId}`)
+            .then(res => {
+                if (!res.ok) throw new Error("ID not found");
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('res').style.display = 'block';
+                document.getElementById('trkStatus').innerText = data.status || "Investigation in Progress";
+            })
+            .catch(err => alert("Grievance ID not found. Please check and try again."));
         }
     </script>
 </body>
