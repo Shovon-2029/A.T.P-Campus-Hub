@@ -1,0 +1,20 @@
+ [
+ {
+        "name": "Ayan Naskar",
+        "rating": 4,
+        "comment": "Great faculty and good placements. Hostel life is fun, but mess food can be improved. The central library is huge.",
+        "date": "15 Feb 2026"
+    },
+    {
+        "name": "Shovon Roy",
+        "rating": 5,
+        "comment": "The campus is breathtaking \u2014 literally on the beach! Labs are world-class and the library is 24/7. Highly recommend CSE, and IT departments.",
+        "date": "02 Feb 2026"
+    },
+    {
+        "name": "Anik Sarkar",
+        "rating": 5,
+        "comment": "I loved the innovation center and the open-air auditorium. The institute takes research seriously. Lots of fests and student clubs.",
+        "date": "12 Jan 2026"
+    }
+]

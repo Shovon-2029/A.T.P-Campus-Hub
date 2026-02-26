@@ -4,416 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campus Sphere · detail & reviews</title>
-  <!-- Font Awesome 5 for clean icons (free) -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-    }
-
-    body {
-      background: #f1f5f9;
-      display: flex;
-      justify-content: center;
-      padding: 2rem 1rem;
-      min-height: 100vh;
-    }
-
-    .campus-wrapper {
-      max-width: 1100px;
-      width: 100%;
-    }
-
-    /* main card style */
-    .card {
-      background: white;
-      border-radius: 28px;
-      box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.15);
-      padding: 2rem;
-      transition: 0.2s;
-    }
-
-    /* institute detail card */
-    .institute-card {
-      margin-bottom: 2.5rem;
-      background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
-      border: 1px solid rgba(165, 180, 202, 0.2);
-    }
-
-    .institute-header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .campus-icon {
-      background: #1e3c5c;
-      width: 80px;
-      height: 80px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 2.5rem;
-      box-shadow: 0 15px 20px -10px #1e3c5c60;
-    }
-
-    .institute-heading h1 {
-      font-size: 2.2rem;
-      font-weight: 600;
-      color: #0b2a41;
-      letter-spacing: -0.02em;
-    }
-
-    .institute-heading .badge {
-      background: #e6f0fa;
-      color: #1e3c5c;
-      padding: 0.3rem 1rem;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      display: inline-block;
-      margin-top: 0.5rem;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .detail-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      background: #f8fafd;
-      padding: 0.8rem 1.2rem;
-      border-radius: 40px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .detail-item i {
-      color: #2c5f8a;
-      width: 24px;
-      font-size: 1.2rem;
-    }
-
-    .detail-item span {
-      font-weight: 500;
-      color: #1e293b;
-    }
-
-    .detail-item small {
-      color: #5f6c80;
-      margin-left: 0.3rem;
-      font-weight: 400;
-    }
-
-    .desc-text {
-      margin-top: 1.5rem;
-      color: #334155;
-      line-height: 1.6;
-      border-left: 4px solid #a0c4e2;
-      padding-left: 1.3rem;
-      background: #f9fcff;
-      border-radius: 0 12px 12px 0;
-      padding: 1rem 1.5rem;
-    }
-
-    /* ===== REVIEW SECTION ===== */
-    .review-section {
-      background: white;
-      border-radius: 28px;
-      box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.15);
-      padding: 2rem;
-    }
-
-    .review-header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .review-header h2 {
-      font-size: 1.9rem;
-      font-weight: 600;
-      color: #0b2a41;
-    }
-
-    .review-header h2 i {
-      color: #f4b740;
-      margin-right: 10px;
-    }
-
-    .avg-rating-card {
-      background: #f0f4fa;
-      padding: 0.8rem 1.8rem;
-      border-radius: 60px;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .avg-number {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #1e3c5c;
-    }
-
-    .stars-avg {
-      color: #f5b342;
-      font-size: 1.3rem;
-      letter-spacing: 4px;
-    }
-
-    .review-count {
-      background: #cfdeed;
-      padding: 0.3rem 1rem;
-      border-radius: 30px;
-      font-weight: 500;
-      color: #0f2c41;
-    }
-
-    /* reviews list */
-    .reviews-list {
-      margin: 2.5rem 0 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .review-card {
-      background: #ffffff;
-      border: 1px solid #e9edf3;
-      border-radius: 24px;
-      padding: 1.5rem 2rem;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.02);
-      transition: 0.2s;
-    }
-
-    .review-card:hover {
-      border-color: #b9d1ec;
-      box-shadow: 0 10px 22px -10px #a0bbd6;
-    }
-
-    .reviewer-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.7rem;
-    }
-
-    .reviewer-name {
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: #0f3a5e;
-    }
-
-    .review-date {
-      color: #6f7d95;
-      font-size: 0.9rem;
-      background: #ecf1f7;
-      padding: 0.2rem 1rem;
-      border-radius: 30px;
-    }
-
-    .review-stars {
-      color: #f5b342;
-      font-size: 1.2rem;
-      letter-spacing: 3px;
-      margin: 0.5rem 0 0.6rem;
-    }
-
-    .review-comment {
-      color: #2d3a4b;
-      line-height: 1.5;
-      font-size: 1rem;
-      background: #f6faff;
-      padding: 1rem 1.2rem;
-      border-radius: 18px;
-      border: 1px solid #e5ebf3;
-    }
-
-    .empty-reviews {
-      text-align: center;
-      padding: 3rem;
-      background: #f8fafc;
-      border-radius: 40px;
-      color: #5f718b;
-      font-size: 1.2rem;
-    }
-
-    /* form */
-    .form-title {
-      font-size: 1.5rem;
-      margin: 1.5rem 0 1rem 0;
-      color: #1e3a5f;
-      font-weight: 500;
-    }
-
-    .review-form {
-      background: #f7fafd;
-      border-radius: 28px;
-      padding: 2rem;
-      border: 1px solid #dae5f0;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .full-width {
-      grid-column: span 2;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .form-group label {
-      font-weight: 500;
-      color: #1f3a57;
-      margin-left: 0.5rem;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      padding: 1rem 1.2rem;
-      border: 2px solid #dbe1ea;
-      border-radius: 40px;
-      font-size: 1rem;
-      background: white;
-      outline: none;
-      transition: 0.15s;
-    }
-
-    .form-group textarea {
-      border-radius: 28px;
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: #1e5f9e;
-      box-shadow: 0 0 0 4px rgba(20, 100, 180, 0.15);
-    }
-
-    .btn-submit {
-      background: #1e3c5c;
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 1.2rem;
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: 0.15s;
-      border: 1px solid #16344d;
-      width: fit-content;
-      margin-top: 0.5rem;
-    }
-
-    .btn-submit:hover {
-      background: #143450;
-      transform: scale(1.02);
-      box-shadow: 0 8px 18px -8px #102c42;
-    }
-
-    .btn-submit i {
-      font-size: 1.2rem;
-    }
-
-    small.form-hint {
-      color: #ba332b;
-      font-size: 0.9rem;
-      margin-left: 1rem;
-    }
-
-    hr {
-      border: none;
-      border-top: 2px dashed #cbd5e1;
-      margin: 1.8rem 0 1rem 0;
-    }
-
-    /* responsive */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+    body { background: #f1f5f9; display: flex; justify-content: center; padding: 2rem 1rem; min-height: 100vh; }
+    .campus-wrapper { max-width: 1100px; width: 100%; }
+    .card { background: white; border-radius: 28px; box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.15); padding: 2rem; transition: 0.2s; }
+    .institute-card { margin-bottom: 2.5rem; background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%); border: 1px solid rgba(165, 180, 202, 0.2); }
+    .institute-header { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; }
+    .campus-icon { background: #1e3c5c; width: 80px; height: 80px; border-radius: 30px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; box-shadow: 0 15px 20px -10px #1e3c5c60; }
+    .institute-heading h1 { font-size: 2.2rem; font-weight: 600; color: #0b2a41; letter-spacing: -0.02em; }
+    .institute-heading .badge { background: #e6f0fa; color: #1e3c5c; padding: 0.3rem 1rem; border-radius: 40px; font-weight: 500; font-size: 0.9rem; display: inline-block; margin-top: 0.5rem; }
+    .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .detail-item { display: flex; align-items: center; gap: 0.8rem; background: #f8fafd; padding: 0.8rem 1.2rem; border-radius: 40px; border: 1px solid #e2e8f0; }
+    .detail-item i { color: #2c5f8a; width: 24px; font-size: 1.2rem; }
+    .detail-item span { font-weight: 500; color: #1e293b; }
+    .detail-item small { color: #5f6c80; margin-left: 0.3rem; font-weight: 400; }
+    .desc-text { margin-top: 1.5rem; color: #334155; line-height: 1.6; border-left: 4px solid #a0c4e2; padding-left: 1.3rem; background: #f9fcff; border-radius: 0 12px 12px 0; padding: 1rem 1.5rem; }
+    .review-section { background: white; border-radius: 28px; box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.15); padding: 2rem; }
+    .review-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .review-header h2 { font-size: 1.9rem; font-weight: 600; color: #0b2a41; }
+    .review-header h2 i { color: #f4b740; margin-right: 10px; }
+    .avg-rating-card { background: #f0f4fa; padding: 0.8rem 1.8rem; border-radius: 60px; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .avg-number { font-size: 2.2rem; font-weight: 700; color: #1e3c5c; }
+    .stars-avg { color: #f5b342; font-size: 1.3rem; letter-spacing: 4px; }
+    .review-count { background: #cfdeed; padding: 0.3rem 1rem; border-radius: 30px; font-weight: 500; color: #0f2c41; }
+    .reviews-list { margin: 2.5rem 0 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .review-card { background: #ffffff; border: 1px solid #e9edf3; border-radius: 24px; padding: 1.5rem 2rem; box-shadow: 0 5px 12px rgba(0,0,0,0.02); transition: 0.2s; }
+    .review-card:hover { border-color: #b9d1ec; box-shadow: 0 10px 22px -10px #a0bbd6; }
+    .reviewer-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 0.7rem; }
+    .reviewer-name { font-weight: 600; font-size: 1.2rem; color: #0f3a5e; }
+    .review-date { color: #6f7d95; font-size: 0.9rem; background: #ecf1f7; padding: 0.2rem 1rem; border-radius: 30px; }
+    .review-stars { color: #f5b342; font-size: 1.2rem; letter-spacing: 3px; margin: 0.5rem 0 0.6rem; }
+    .review-comment { color: #2d3a4b; line-height: 1.5; font-size: 1rem; background: #f6faff; padding: 1rem 1.2rem; border-radius: 18px; border: 1px solid #e5ebf3; }
+    .empty-reviews { text-align: center; padding: 3rem; background: #f8fafc; border-radius: 40px; color: #5f718b; font-size: 1.2rem; }
+    .form-title { font-size: 1.5rem; margin: 1.5rem 0 1rem 0; color: #1e3a5f; font-weight: 500; }
+    .review-form { background: #f7fafd; border-radius: 28px; padding: 2rem; border: 1px solid #dae5f0; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .full-width { grid-column: span 2; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label { font-weight: 500; color: #1f3a57; margin-left: 0.5rem; }
+    .form-group input, .form-group select, .form-group textarea { padding: 1rem 1.2rem; border: 2px solid #dbe1ea; border-radius: 40px; font-size: 1rem; background: white; outline: none; transition: 0.15s; }
+    .form-group textarea { border-radius: 28px; resize: vertical; min-height: 100px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1e5f9e; box-shadow: 0 0 0 4px rgba(20, 100, 180, 0.15); }
+    .btn-submit { background: #1e3c5c; border: none; color: white; font-weight: 600; font-size: 1.2rem; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: 0.15s; border: 1px solid #16344d; width: fit-content; margin-top: 0.5rem; }
+    .btn-submit:hover { background: #143450; transform: scale(1.02); box-shadow: 0 8px 18px -8px #102c42; }
+    .btn-submit i { font-size: 1.2rem; }
+    small.form-hint { color: #ba332b; font-size: 0.9rem; margin-left: 1rem; font-weight: bold; }
+    hr { border: none; border-top: 2px dashed #cbd5e1; margin: 1.8rem 0 1rem 0; }
     @media (max-width: 650px) {
-      .institute-header {
-        flex-direction: column;
-        align-items: start;
-      }
-      .review-header {
-        flex-direction: column;
-        align-items: start;
-        gap: 1rem;
-      }
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .full-width {
-        grid-column: span 1;
-      }
-      .campus-wrapper {
-        padding: 0;
-      }
-      .card, .review-section {
-        padding: 1.5rem;
-      }
+      .institute-header { flex-direction: column; align-items: start; }
+      .review-header { flex-direction: column; align-items: start; gap: 1rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .full-width { grid-column: span 1; }
+      .campus-wrapper { padding: 0; }
+      .card, .review-section { padding: 1.5rem; }
     }
   </style>
 </head>
 <body>
   <div class="campus-wrapper">
-    <!-- INSTITUTE DETAIL CARD (part of review section context) -->
     <div class="institute-card card">
       <div class="institute-header">
-        <div class="campus-icon">
-          <i class="fas fa-landmark"></i>
-        </div>
+        <div class="campus-icon"><i class="fas fa-landmark"></i></div>
         <div class="institute-heading">
-          <h1>Engineering Institute of Technology · Karnataka</h1>
-          <span class="badge"><i class="fas fa-star" style="color: #f5b342;"></i> AICTE · NAAC A++</span>
+          <h1>Government College of Engineering and Leather Technology · Kolkata</h1>
+          <span class="badge"><i class="fas fa-star" style="color: #f5b342;"></i> AICTE · NAAC A</span>
         </div>
       </div>
-
       <div class="detail-grid">
-        <div class="detail-item"><i class="fas fa-map-pin"></i> <span>Surathkal, Mangalore <small>INDIA</small></span></div>
-        <div class="detail-item"><i class="fas fa-users"></i> <span>5,200+ students</span></div>
-        <div class="detail-item"><i class="fas fa-chalkboard-teacher"></i> <span>340 faculty</span></div>
-        <div class="detail-item"><i class="fas fa-calendar-alt"></i> <span>Est. 1960</span></div>
+        <div class="detail-item"><i class="fas fa-map-pin"></i> <span>Block-LB 11, Sector-III, Salt Lake, Kolkata, West Bengal <small>INDIA</small></span></div>
+        <div class="detail-item"><i class="fas fa-users"></i> <span>1,000+ students</span></div>
+        <div class="detail-item"><i class="fas fa-chalkboard-teacher"></i> <span>100+ faculty</span></div>
+        <div class="detail-item"><i class="fas fa-calendar-alt"></i> <span>Est. 1919</span></div>
       </div>
-
       <div class="desc-text">
         <i class="fas fa-quote-left" style="color:#1e5f9e; opacity:0.6;"></i> 
-        EITK is a premier technical institute nestled along the Arabian Sea. Known for research, lush green campus, and vibrant student life. Offers B.Tech, M.Tech & PhD programs.
+        The Government College of Engineering and Leather Technology, often referred to as GCELT, is an institute offering engineering courses at undergraduate levels in Computer Science & Engineering, Information Technology and Leather Technology, The college is affiliated to the Maulana Abul Kalam Azad University of Technology (formerly known as West Bengal University of Technology) and is approved by AICTE. This institute is situated in Kolkata in the Indian State of West Bengal.
       </div>
     </div>
 
-    <!-- ========== REVIEW SECTION (contains institute details context + reviews) ========== -->
     <section class="review-section">
       <div class="review-header">
         <h2><i class="fas fa-comments"></i> Campus reviews</h2>
-        <!-- dynamic average and count will be injected via js -->
         <div class="avg-rating-card" id="averageContainer">
           <span class="avg-number" id="avgDisplay">0.0</span>
           <span class="stars-avg" id="avgStars">☆☆☆☆☆</span>
@@ -421,15 +94,9 @@
         </div>
       </div>
 
-      <!-- container for all review cards -->
-      <div id="reviewsListContainer" class="reviews-list">
-        <!-- JS will fill dynamic cards here -->
-      </div>
+      <div id="reviewsListContainer" class="reviews-list"></div>
 
-      <!-- add review form -->
-      <div class="form-title">
-        <i class="fas fa-pen" style="color: #1e5f9e;"></i> Write a review about this institute
-      </div>
+      <div class="form-title"><i class="fas fa-pen" style="color: #1e5f9e;"></i> Write a review about this institute</div>
       <form id="reviewForm" class="review-form">
         <div class="form-grid">
           <div class="form-group">
@@ -458,33 +125,9 @@
   </div>
 
   <script>
-    (function() {
-      // ---------- MOCK INITIAL REVIEWS (institute details implicitly included) ----------
-      const initialReviews = [
-        {
-          name: "Ananya Shenoy",
-          rating: 5,
-          comment: "The campus is breathtaking — literally on the beach! Labs are world-class and the library is 24/7. Highly recommend CSE and Physics departments.",
-          date: "15 Mar 2025"
-        },
-        {
-          name: "Rohan Mehta",
-          rating: 4,
-          comment: "Great faculty and good placements. Hostel life is fun, but mess food can be improved. The central library is huge.",
-          date: "02 Feb 2025"
-        },
-        {
-          name: "Neha Sharma",
-          rating: 5,
-          comment: "I loved the innovation center and the open-air auditorium. The institute takes research seriously. Lots of fests and student clubs.",
-          date: "12 Jan 2025"
-        }
-      ];
+    document.addEventListener("DOMContentLoaded", () => {
+      let reviews = [];
 
-      // state: array of reviews (will be mutated)
-      let reviews = JSON.parse(JSON.stringify(initialReviews)); // clone
-
-      // DOM elements
       const reviewsContainer = document.getElementById('reviewsListContainer');
       const avgDisplaySpan = document.getElementById('avgDisplay');
       const avgStarsSpan = document.getElementById('avgStars');
@@ -495,102 +138,60 @@
       const commentText = document.getElementById('reviewComment');
       const formFeedback = document.getElementById('formFeedback');
 
-      // helper: generate star string (★/☆) from rating (1-5)
       function getStarString(rating) {
-        const filled = '★'.repeat(rating);
-        const empty = '☆'.repeat(5 - rating);
-        return filled + empty;
+        return '★'.repeat(rating) + '☆'.repeat(5 - rating);
       }
 
-      // compute average rating
       function computeAverage() {
         if (reviews.length === 0) return 0;
         const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
         return sum / reviews.length;
       }
 
-      // update average display and star preview
       function updateAverageDisplay() {
         const avg = computeAverage();
         avgDisplaySpan.textContent = avg.toFixed(1);
-        // show whole stars for average using floor (best representative)
-        const wholeStars = Math.floor(avg); 
-        const remainder = avg - wholeStars;
-        // we show stars as filled and half? not needed – just for vibe: show filled stars up to whole, rest empty, but keep numeric
-        // we'll show stars based on rounded average to nearest integer? but better use numeric + star style.
-        // create a star string based on rounded avg (half not shown, it's fine)
         const rounded = Math.round(avg);
         avgStarsSpan.textContent = getStarString(rounded); 
         reviewCountSpan.textContent = `${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`;
       }
 
-      // render all reviews inside container
       function renderReviews() {
-        reviewsContainer.innerHTML = ''; // clear
+        reviewsContainer.innerHTML = ''; 
 
         if (reviews.length === 0) {
           reviewsContainer.innerHTML = '<div class="empty-reviews"><i class="fas fa-smile-wink" style="font-size:2.5rem; opacity:0.5; margin-bottom:1rem; display:block;"></i>No reviews yet. Be the first to review this institute!</div>';
         } else {
           reviews.forEach(rev => {
-            // create card
             const card = document.createElement('div');
             card.className = 'review-card';
-
-            // reviewer row
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'reviewer-row';
-
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'reviewer-name';
-            nameSpan.textContent = rev.name;
-
-            const dateSpan = document.createElement('span');
-            dateSpan.className = 'review-date';
-            dateSpan.textContent = rev.date;
-
-            rowDiv.appendChild(nameSpan);
-            rowDiv.appendChild(dateSpan);
-
-            // stars
-            const starsDiv = document.createElement('div');
-            starsDiv.className = 'review-stars';
-            starsDiv.textContent = getStarString(rev.rating); // e.g. ★★★★☆
-
-            // comment
-            const commentDiv = document.createElement('div');
-            commentDiv.className = 'review-comment';
-            commentDiv.textContent = rev.comment;
-
-            card.appendChild(rowDiv);
-            card.appendChild(starsDiv);
-            card.appendChild(commentDiv);
-
+            card.innerHTML = `
+              <div class="reviewer-row">
+                <span class="reviewer-name">${rev.name}</span>
+                <span class="review-date">${rev.date}</span>
+              </div>
+              <div class="review-stars">${getStarString(rev.rating)}</div>
+              <div class="review-comment">${rev.comment}</div>
+            `;
             reviewsContainer.appendChild(card);
           });
         }
-
-        // also update average header
         updateAverageDisplay();
       }
 
-      // add new review (push to array & re-render)
-      function addReview(name, rating, comment) {
-        const dateObj = new Date();
-        const formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/ /g, ' ');
-        // e.g. "7 Apr 2025"
-        
-        const newReview = {
-          name: name.trim(),
-          rating: rating,
-          comment: comment.trim(),
-          date: formattedDate
-        };
-        
-        reviews.unshift(newReview); // latest appears first
-        renderReviews();
+     async function fetchReviews() {
+        try {
+          // ADDED FULL URL HERE
+          const response = await fetch('http://127.0.0.1:5000/api/reviews'); 
+          if (!response.ok) throw new Error("Server not responding correctly");
+          reviews = await response.json();
+          renderReviews();
+        } catch (error) {
+          console.error("Error loading reviews:", error);
+          reviewsContainer.innerHTML = '<div class="empty-reviews" style="color:#ba332b;">⚠️ Could not connect to the Python server. Make sure you are running server.py and viewing this on http://127.0.0.1:5000 !</div>';
+        }
       }
 
-      // reset form fields
       function resetForm() {
         nameInput.value = '';
         ratingSelect.value = '5';
@@ -598,48 +199,41 @@
         formFeedback.textContent = '';
       }
 
-      // validation & form submit
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
-
         const name = nameInput.value.trim();
         const rating = parseInt(ratingSelect.value, 10);
         const comment = commentText.value.trim();
 
-        // reset feedback
         formFeedback.textContent = '';
+        if (!name || !comment || rating < 1 || rating > 5) return;
 
-        if (!name) {
-          formFeedback.textContent = '⚠️ Please enter your name';
-          nameInput.focus();
-          return;
-        }
-        if (!comment) {
-          formFeedback.textContent = '⚠️ Review comment cannot be empty';
-          commentText.focus();
-          return;
-        }
-        if (rating < 1 || rating > 5) {
-          formFeedback.textContent = '⚠️ Select a valid rating (1-5)';
-          return;
-        }
+        try {
+          // ADDED FULL URL HERE
+          const response = await fetch('http://127.0.0.1:5000/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, rating, comment })
+          });
 
-        // add review
-        addReview(name, rating, comment);
-        resetForm();
-
-        // little success feedback (disappear after 2s)
-        formFeedback.style.color = '#1d7a4e';
-        formFeedback.textContent = '✓ Review submitted! Thank you.';
-        setTimeout(() => {
-          formFeedback.textContent = '';
-          formFeedback.style.color = '#ba332b'; // revert
-        }, 2500);
+          if (response.ok) {
+            const data = await response.json();
+            reviews.unshift(data.review);
+            renderReviews();
+            resetForm();
+            formFeedback.style.color = '#1d7a4e';
+            formFeedback.textContent = '✓ Review submitted! Thank you.';
+            setTimeout(() => { formFeedback.textContent = ''; formFeedback.style.color = '#ba332b'; }, 2500);
+          } else {
+            throw new Error("Failed to post");
+          }
+        } catch (error) {
+          formFeedback.textContent = '⚠️ Error submitting review. Is the Python server running?';
+        }
       });
-
-      // initial render
-      renderReviews();
-    })();
+      // Load reviews on startup
+      fetchReviews();
+    });
   </script>
 </body>
 </html>
