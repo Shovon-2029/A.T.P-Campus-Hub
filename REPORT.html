@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATP CAMPUS HUB · Organizer Reports</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0066FF;
+            --primary-soft: rgba(0, 102, 255, 0.08);
+            --accent-red: #ff3b3b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius-xl: 28px;
+            --radius-lg: 18px;
+            --shadow: 0 10px 30px -10px rgba(0, 102, 255, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .brand h2 { font-size: 1.8rem; font-weight: 800; color: var(--accent-red); letter-spacing: -0.5px; }
+        .brand span { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+
+        .back-btn {
+            background: white;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Stats Summary */
+        .stats-summary {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-box .label { color: var(--text-muted); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-box .value { font-size: 2.5rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+
+        /* Reports List */
+        .reports-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .report-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.8rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        .report-card:hover {
+            border-color: #b9d1ec;
+            box-shadow: var(--shadow);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .report-id {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-soft);
+            padding: 5px 12px;
+            border-radius: 8px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-category { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border); }
+        .badge-status { background: #ecfdf5; color: #10b981; border: 1px solid #a7f3d0; }
+
+        .report-body {
+            margin-bottom: 1rem;
+        }
+
+        .report-desc {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+
+        .report-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .meta-value { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
+        .meta-value i { margin-right: 5px; color: var(--primary); }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--card);
+            border-radius: var(--radius-xl);
+            border: 2px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .stats-summary { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .report-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <div class="dashboard-header">
+            <div class="brand">
+                <h2>A.T.P Campus Hub</h2>
+                <span><i class="fas fa-shield-alt"></i> Organizer Reports Portal</span>
+            </div>
+            <a href="institute.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+
+        <div class="stats-summary">
+            <div class="stat-box">
+                <span class="label">Total Reports Logged</span>
+                <span class="value" id="totalCountDisplay">0</span>
+            </div>
+        </div>
+
+        <div id="reportsListContainer" class="reports-list">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                Connecting to secure server...
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let reports = [];
+
+            const reportsContainer = document.getElementById('reportsListContainer');
+            const totalCountDisplay = document.getElementById('totalCountDisplay');
+
+            function updateStats() {
+                totalCountDisplay.textContent = reports.length;
+            }
+
+            function renderReports() {
+                reportsContainer.innerHTML = ''; 
+
+                if (reports.length === 0) {
+                    reportsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            No grievances have been reported yet.
+                        </div>`;
+                } else {
+                    // Sort by newest first based on submission date
+                    reports.sort((a, b) => new Date(b.date_submitted) - new Date(a.date_submitted));
+
+                    reports.forEach(rep => {
+                        const card = document.createElement('div');
+                        card.className = 'report-card';
+                        
+                        // Check if file attached
+                        const fileDisplay = rep.evidence_file !== "No file attached" 
+                            ? `<i class="fas fa-paperclip"></i> ${rep.evidence_file}` 
+                            : `<i class="fas fa-times-circle" style="color: #94a3b8;"></i> No File`;
+
+                        card.innerHTML = `
+                            <div class="report-header">
+                                <div class="report-id">
+                                    <i class="fas fa-fingerprint"></i> ${rep.id}
+                                </div>
+                                <div class="badges">
+                                    <span class="badge badge-category">${rep.category}</span>
+                                    <span class="badge badge-status">${rep.status}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="report-body">
+                                <div class="report-desc">"${rep.description}"</div>
+                            </div>
+
+                            <div class="report-meta">
+                                <div class="meta-item">
+                                    <span class="meta-label">Incident Date</span>
+                                    <span class="meta-value"><i class="far fa-calendar-alt"></i> ${rep.incident_date}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Submitted On</span>
+                                    <span class="meta-value"><i class="far fa-clock"></i> ${rep.date_submitted}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Evidence Attached</span>
+                                    <span class="meta-value" style="word-break: break-all;">${fileDisplay}</span>
+                                </div>
+                            </div>
+                        `;
+                        reportsContainer.appendChild(card);
+                    });
+                }
+                updateStats();
+            }
+
+            // Fetch all complaints from FastAPI backend
+            async function fetchReports() {
+                try {
+                    // Note: Ensure your backend has the /api/all_complaints route added!
+                    const response = await fetch('http://127.0.0.1:9000/api/all_complaints'); 
+                    if (!response.ok) throw new Error("Server not responding correctly");
+                    
+                    const data = await response.json();
+                    
+                    // Convert the dictionary returned by Python into an array of objects
+                    reports = Object.keys(data).map(key => {
+                        return {
+                            id: key,
+                            ...data[key]
+                        };
+                    });
+
+                    renderReports();
+
+                } catch (error) {
+                    console.error("Error loading reports:", error);
+                    reportsContainer.innerHTML = `
+                        <div class="empty-state" style="color: #ef4444; border-color: #fca5a5; background: #fef2f2;">
+                            <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+                            Could not connect to the secure database.<br>
+                            <small style="display:block; margin-top: 10px; color: #7f1d1d;">Ensure your FastAPI server is running at http://127.0.0.1:9000 and the new route is added.</small>
+                        </div>`;
+                }
+            }
+
+            // Initial load
+            fetchReports();
+        });
+    </script>
+</body>
+</html>

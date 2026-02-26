@@ -100,6 +100,13 @@ async def track_complaint(tracking_id: str):
     if not complaint:
         raise HTTPException(status_code=404, detail="Invalid tracking ID or complaint not found.")
     return complaint
+@app.get("/api/all_complaints")
+async def get_all_complaints():
+    try:
+        db = load_db()
+        return db
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     print("SERVER RUNNING! Open http://127.0.0.1:9000 in your browser.")
