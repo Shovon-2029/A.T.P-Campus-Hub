@@ -1,4 +1,4 @@
-# 🎓 A.T.P. Campus Hub: Assistance & 
+# 🎓 A.T.P. Campus Hub: Assistance & Tracking Protocol.
 The AI-Powered "Super-App" for Student Safety, Wellbeing, and Inclusive Navigation.
 🌟 The Vision
 Campuses are micro-societies. If we can solve the challenges of safety, mental health, and accessibility here, we can scale these solutions to cities. A.T.P. Campus Hub brings everything a student needs—from budget food to emergency safety—under one roof.
@@ -37,3 +37,5 @@ AI/ML: Gemini API / OpenAI API (Sentiment Analysis & Recommendations)
 Maps: Mapbox GL JS (Geofencing & Red Zone visualization)
 
 Authentication: Student ID + Org Code validation
+
+© 2026 Algorithm Avengers. Protecting the Campus Voice.
