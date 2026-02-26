@@ -47,14 +47,17 @@ def generate_tracking_id():
 
 @app.get("/")
 async def serve_home():
-    return FileResponse('complaint.html')
+    # This serves the complaint.html file we created in Step 2
+    if os.path.exists('complaint.html'):
+        return FileResponse('complaint.html')
+    return {"error": "complaint.html not found. Please ensure it is in the same folder as main.py."}
 
 @app.post("/api/complaints")
 async def submit_complaint(
     category: str = Form(...),
     incident_date: str = Form(...),
     description: str = Form(...),
-    evidence: Optional[UploadFile] = File(None) # Bulletproof file typing
+    evidence: Optional[UploadFile] = File(None)
 ):
     try:
         db = load_db()
@@ -88,7 +91,6 @@ async def submit_complaint(
         return {"message": "Success", "tracking_id": tracking_id}
         
     except Exception as e:
-        # If it crashes, print the EXACT reason to the terminal!
         print(f"\n❌ CRASH REPORT: {str(e)}\n")
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -100,6 +102,7 @@ async def track_complaint(tracking_id: str):
     if not complaint:
         raise HTTPException(status_code=404, detail="Invalid tracking ID or complaint not found.")
     return complaint
+
 @app.get("/api/all_complaints")
 async def get_all_complaints():
     try:
