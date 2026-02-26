@@ -138,7 +138,6 @@
 <body>
 
     <div class="auth-container">
-        <!-- Left Branding Panel -->
         <div class="auth-left">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
@@ -164,7 +163,6 @@
             </div>
         </div>
 
-        <!-- Right Login Panel -->
         <div class="auth-right">
             <div class="login-card fade-in-up" style="animation-delay: 0.2s;">
                 
@@ -177,16 +175,15 @@
                     <p class="text-gray-500 font-medium">Please enter your credentials.</p>
                 </div>
 
-                <!-- Role Toggle -->
                 <div class="auth-toggle">
                     <div id="slider" class="toggle-slider"></div>
-                    <div class="toggle-btn active" id="studentBtn">Student</div>
-                    <div class="toggle-btn" id="adminBtn">Institution</div>
+                    <div class="toggle-btn active" id="studentBtn" onclick="setRole('student')">Student</div>
+                    <div class="toggle-btn" id="adminBtn" onclick="setRole('admin')">Institution</div>
                 </div>
 
                 <form id="loginForm">
                     <div class="input-group">
-                        <label class="input-label" id="idLabel">Institutional ID</label>
+                        <label class="input-label" id="idLabel">Student Email ID</label>
                         <div class="input-wrapper">
                             <input type="text" id="username" class="form-input" placeholder="Email Address" required>
                             <i class="fas fa-user"></i>
@@ -204,7 +201,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary" href="student.html">
+                    <button type="submit" class="btn-primary">
                         Enter the Hub <i class="fas fa-arrow-right ml-1"></i>
                     </button>
                     <p id="statusMsg" class="hidden mt-4 text-center text-sm font-bold"></p>
@@ -215,7 +212,6 @@
                     <a href="register.html" class="font-bold text-blue-600 hover:underline">Create an account</a>
                 </p>
 
-                <!-- Divider -->
                 <div class="relative my-8">
                     <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
                     <div class="relative bg-white px-4 text-xs font-bold uppercase text-slate-400 w-fit mx-auto">
@@ -223,25 +219,26 @@
                     </div>
                 </div>
 
-                <!-- Google SSO -->
                 <button class="btn-google" id="googleLoginBtn">
                     <img src="https://www.svgrepo.com/show/355037/google.svg" width="20" alt="Google">
-                    Continue with Google
+                    <span id="googleBtnText">Continue with Google</span>
                 </button>
 
             </div>
         </div>
     </div>
 
-    
-    <!-- UI Toggle Script -->
     <script>
-        let currentRole = "student";
+        // --- 1. State Management ---
+        let currentRole = "student"; // Default role
+        
+        // --- 2. DOM Elements ---
         const slider = document.getElementById("slider");
         const studentBtn = document.getElementById("studentBtn");
         const adminBtn = document.getElementById("adminBtn");
         const idLabel = document.getElementById("idLabel");
-
+        
+        // --- 3. UI Toggle Function ---
         function setRole(role){
             currentRole = role;
             slider.style.transform = role === "admin" ? "translateX(100%)" : "translateX(0)";
@@ -249,111 +246,90 @@
             adminBtn.classList.toggle("active", role === "admin");
             idLabel.textContent = role === "admin" ? "Institution ID" : "Student Email ID";
         }
-        
-        studentBtn.onclick = () => setRole("student");
-        adminBtn.onclick = () => setRole("admin");
-    </script>
 
-    <script>
-    // Initialize Icons (ensure lucide script is loaded in your HTML)
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-
-    // Google Config
-    const CLIENT_ID = '1027202675528-dq0u7ce0cpa851bm30op28dlvbmgk860.apps.googleusercontent.com'; // Replace with your actual Client ID
-    let isOrg = false;
-    let tokenClient;
-
-    // On Load initialization
-    window.onload = function() {
-        // Initialize Google OAuth Token Client
-        if(window.google) {
-            tokenClient = google.accounts.oauth2.initTokenClient({
-                client_id: CLIENT_ID,
-                scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
-                callback: async (resp) => {
-                    if (resp.access_token) {
-                        await fetchUser(resp.access_token);
-                    }
-                },
-            });
-        } else {
-            console.warn("Google Identity Services script not loaded.");
-        }
-
-        // Attach Form Listener to replace your old Firebase event listener
-        const form = document.getElementById("loginForm");
-        if(form) {
-            form.addEventListener("submit", handleLogin);
-        }
-
-        // Attach Google Login Listener
-        const googleLoginBtn = document.getElementById("googleLoginBtn");
-        if(googleLoginBtn) {
-            googleLoginBtn.addEventListener("click", handleGoogleLogin);
-        }
-    };
-
-    function handleGoogleLogin(e) {
-        if (e) e.preventDefault();
-        if (!tokenClient) return alert("Google Service is still loading or failed to load...");
-        tokenClient.requestAccessToken();
-    }
-
-    async function fetchUser(token) {
-        const btnText = document.getElementById('googleBtnText');
-        if (btnText) btnText.innerText = "Verifying...";
-        
-        try {
-            const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const user = await res.json();
+        // --- 4. Form Submission & Redirection Logic ---
+        function handleLogin(e) {
+            e.preventDefault();
             
-            alert(`Welcome, ${user.name}!`);
-            window.location.assign('student.html');
-        } catch (e) {
-            console.error(e);
-            alert("Login failed.");
-            if (btnText) btnText.innerText = "Sign in with Google";
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            // Show loading state
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Validating...';
+            
+            // Simulate authentication delay, then redirect based on role
+            setTimeout(() => {
+                if (currentRole === "student") {
+                    window.location.assign('student.html');
+                } else if (currentRole === "admin") {
+                    window.location.assign('institute.html'); // Change this to your actual institute dashboard page
+                }
+            }, 800);
         }
-    }
 
-    // UI Toggles
-    function toggleUserType() {
-        isOrg = !isOrg;
-        const slider = document.getElementById('slider');
-        const studentLabel = document.getElementById('studentLabel');
-        const orgLabel = document.getElementById('orgLabel');
+        // --- 5. Google OAuth Setup ---
+        const CLIENT_ID = '1027202675528-dq0u7ce0cpa851bm30op28dlvbmgk860.apps.googleusercontent.com'; // Replace with your actual Client ID
+        let tokenClient;
 
-        if (slider && studentLabel && orgLabel) {
-            slider.style.left = isOrg ? '50%' : '0';
-            if(isOrg) {
-                orgLabel.classList.add('active-text');
-                studentLabel.classList.remove('active-text');
+        window.onload = function() {
+            // Initialize Lucide Icons if used
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // Initialize Google OAuth Token Client
+            if(window.google) {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+                    callback: async (resp) => {
+                        if (resp.access_token) {
+                            await fetchUser(resp.access_token);
+                        }
+                    },
+                });
             } else {
-                studentLabel.classList.add('active-text');
-                orgLabel.classList.remove('active-text');
+                console.warn("Google Identity Services script not loaded.");
+            }
+
+            // Attach Event Listeners
+            const form = document.getElementById("loginForm");
+            if(form) form.addEventListener("submit", handleLogin);
+
+            const googleLoginBtn = document.getElementById("googleLoginBtn");
+            if(googleLoginBtn) googleLoginBtn.addEventListener("click", handleGoogleLogin);
+        };
+
+        function handleGoogleLogin(e) {
+            if (e) e.preventDefault();
+            if (!tokenClient) return alert("Google Service is still loading or failed to load...");
+            tokenClient.requestAccessToken();
+        }
+
+        async function fetchUser(token) {
+            const btnText = document.getElementById('googleBtnText');
+            if (btnText) btnText.innerText = "Verifying...";
+            
+            try {
+                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const user = await res.json();
+                
+                alert(`Welcome, ${user.name}!`);
+                
+                // Redirect Google Login based on the selected role too
+                if (currentRole === "student") {
+                    window.location.assign('student.html');
+                } else {
+                    window.location.assign('institute.html');
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Login failed.");
+                if (btnText) btnText.innerText = "Continue with Google";
             }
         }
-    }
-
-    // Form Submission Logic
-    function handleLogin(e) {
-        e.preventDefault();
-        
-        // Find the submit button to update its text
-        const btn = e.target.querySelector('button[type="submit"]') || e.target.querySelector('button');
-        const originalText = btn ? btn.innerHTML : '';
-        
-        if (btn) btn.innerHTML = 'Validating...';
-        
-        // Simulate authentication delay, then redirect
-        setTimeout(() => {
-            window.location.assign('student.html');
-        }, 800);
-    }
-</script>
+    </script>
 </body>
 </html>
