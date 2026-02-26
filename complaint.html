@@ -143,7 +143,7 @@
 
     <header>
         <div class="brand">
-            <a href="index.html" onclick="setView('reg'); return true;">
+            <a href="#" onclick="setView('reg'); return false;" style="text-decoration:none;">
                 <h2>A.T.P Campus Hub</h2>
                 <span>🔒 Secure & Anonymous</span>
             </a>
@@ -255,17 +255,15 @@
             }
         }
 
-        // 1. Submit Complaint (Refresh-Proof Version)
+        // 1. Submit Complaint
         function submitGrievance() {
             const form = document.getElementById('gForm');
             
-            // Manually check if required fields are filled
             if (!document.getElementById('cat').value || !document.getElementById('inc_date').value || !document.getElementById('desc').value) {
                 alert("Please fill in all required fields (Category, Date, Description).");
                 return;
             }
 
-            // Build FormData
             const formData = new FormData();
             formData.append('category', document.getElementById('cat').value);
             formData.append('incident_date', document.getElementById('inc_date').value);
@@ -276,7 +274,6 @@
                 formData.append('evidence', fileInput.files[0]);
             }
 
-            // Send data to Python
             fetch('http://127.0.0.1:9000/api/complaints', {
                 method: 'POST',
                 body: formData
@@ -286,43 +283,42 @@
                 return res.json();
             })
             .then(data => {
-                // Show modal, freeze screen
                 document.getElementById('genId').innerText = data.tracking_id;
                 document.getElementById('mod').style.display = 'flex';
             })
             .catch(err => {
-                alert("Error submitting complaint. Check your python terminal.");
+                alert("Error submitting complaint. Make sure the Python server is running.");
             });
         }
 
         // 2. Copy ID and Close Modal
-       // 2a. ONLY Copies the ID (Does not close the modal)
-        function copyIdOnly() {
+        function copyAndClose() {
             const trackingId = document.getElementById('genId').innerText;
             const btn = document.getElementById('copyBtn');
             
+            // Try to copy to clipboard
             navigator.clipboard.writeText(trackingId).then(() => {
-                // Change button to green "COPIED!"
                 btn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
                 btn.style.background = '#10b981';
                 
-                // NO TIMER HERE! The popup stays exactly where it is.
+                // Close after a brief delay
+                setTimeout(() => {
+                    closeModal();
+                }, 1000);
             }).catch(err => {
-                alert("Clipboard access blocked. Please highlight the ID and copy it manually.");
+                // If clipboard fails, just close
+                alert("Please highlight the ID and copy it manually, then click okay.");
+                closeModal();
             });
         }
 
-        // 2b. ONLY Closes the modal when YOU click "CLOSE"
-        function closeModalOnly() {
+        // Helper to reset and close
+        function closeModal() {
             document.getElementById('mod').style.display = 'none';
             document.getElementById('gForm').reset();
             
-            // Clear memory if you are using the freeze hack
-            sessionStorage.removeItem('frozenTrackingId');
-            
-            // Reset the copy button back to normal for the next person
             const btn = document.getElementById('copyBtn');
-            btn.innerHTML = '<i class="fas fa-copy"></i> COPY ID';
+            btn.innerHTML = 'COPY & CLOSE';
             btn.style.background = 'var(--primary)';
             
             setView('reg');
@@ -345,7 +341,10 @@
                 document.getElementById('res').style.display = 'block';
                 document.getElementById('trkStatus').innerText = data.status || "Investigation in Progress";
             })
-            .catch(err => alert("Grievance ID not found. Please check and try again."));
+            .catch(err => {
+                alert("Grievance ID not found. Please check and try again.");
+                document.getElementById('res').style.display = 'none';
+            });
         }
     </script>
 </body>
