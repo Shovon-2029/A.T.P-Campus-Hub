@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A.T.P Campus Hub | Smart Institute Portal</title>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-blue: #003366;
+      --secondary-blue: #0056b3;
+      --light-bg: #f4f7f6;
+      --white: #ffffff;
+      --accent: #ff9800;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-bg);
+      color: #333;
+    }
+
+    /* ================= HEADER ================= */
+    header {
+      background: var(--primary-blue);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .logo a {
+      text-decoration: none;
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .menu-btn {
+      font-size: 26px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* ================= SIDEBAR ================= */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background: var(--primary-blue);
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      display: block;
+      text-decoration: none;
+      font-size: 18px;
+      color: #ddd;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .sidebar .close-btn {
+      font-size: 32px;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    /* ================= MAIN CONTAINER ================= */
+    .container {
+      max-width: 1000px;
+      margin: 25px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .institute-header {
+      text-align: center;
+      border: 2px solid var(--primary-blue);
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    /* ================= HERO IMAGE ================= */
+    .hero-image {
+      width: 100%;
+      height: 300px;
+      border-radius: 6px;
+      background: url('https://images.unsplash.com/photo-1523050853061-85e8398c7f6f?auto=format&fit=crop&w=1000&q=80')
+                  center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.8);
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    /* ================= ACTION BUTTONS ================= */
+    .action-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .btn-review {
+      background: #4caf50;
+    }
+
+    .btn-complaint {
+      background: #f44336;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    /* ================= FEATURES ================= */
+    .features-section {
+      border-top: 2px dashed #ccc;
+      padding-top: 20px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .feature-card {
+      background: #f9f9f9;
+      padding: 18px;
+      text-align: center;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary-blue);
+      transition: 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .feature-card i {
+      font-size: 30px;
+      color: var(--secondary-blue);
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="sidebar">
+    <span class="close-btn" onclick="closeNav()">&times;</span>
+    <a href="#"><i class="fas fa-user-graduate"></i> Student Details</a>
+    <a href="#"><i class="fas fa-user-tie"></i> Official Management</a>
+    <a href="#"><i class="fas fa-bullhorn"></i> Upload Notice</a>
+    <a href="#"><i class="fas fa-chalkboard-teacher"></i> Classes</a>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <a href="index.html">A.T.P Campus Hub</a>
+    </div>
+    <button class="menu-btn" onclick="openNav()">&#9776;</button>
+  </header>
+
+  <!-- MAIN -->
+  <div class="container">
+
+    <div class="institute-header">
+      <h1>Engineering Institute of Technology</h1>
+    </div>
+
+    <div class="hero-image">
+      Campus Overview
+    </div>
+
+    <div class="action-row">
+      <a href="#" class="btn btn-review" id="reviewBtn">
+        <i class="fas fa-star"></i> Reviews
+      </a>
+      <a href="#" class="btn btn-complaint">
+        <i class="fas fa-exclamation-triangle"></i> Complaints
+      </a>
+    </div>
+
+    <div class="features-section">
+      <h3><i class="fas fa-book-reader"></i> Students </h3>
+      <div class="feature-grid">
+        <div class="feature-card"><i class="fas fa-file-invoice-dollar"></i><p>Online Fee Payment</p></div>
+        <div class="feature-card"><i class="fas fa-clipboard-list"></i><p>Attendance Tracking</p></div>
+        <div class="feature-card"><i class="fas fa-graduation-cap"></i><p>Exam & Reports</p></div>
+        <div class="feature-card"><i class="fas fa-bus"></i><p>Transport GPS</p></div>
+        <div class="feature-card"><i class="fas fa-tasks"></i><p>Homework & LMS</p></div>
+        <div class="feature-card"><i class="fas fa-comments"></i><p>Parent-Teacher Chat</p></div>
+      </div>
+    </div>
+
+    <div class="features-section">
+  <h3><i class="fas fa-book-reader"></i> Courses </h3>
+  <div class="feature-grid">
+    <div class="feature-card"><i class="fas fa-laptop-code"></i><p>Computer Science</p></div>
+    <div class="feature-card"><i class="fas fa-network-wired"></i><p>Information Technology</p></div>
+    <div class="feature-card"><i class="fas fa-square-root-alt"></i><p>Mathematics & Computation</p></div>
+    <div class="feature-card"><i class="fas fa-sitemap"></i><p>Data Structures</p></div>
+    <div class="feature-card"><i class="fas fa-paint-brush"></i><p>Design & Graphics</p></div>
+    <div class="feature-card"><i class="fas fa-flask"></i><p>Chemistry</p></div>
+  </div>
+</div>
+</div>
+
+  </div>
+
+  <!-- JS -->
+  <script>
+    function openNav() {
+      document.getElementById("sidebar").style.width = "260px";
+    }
+
+    function closeNav() {
+      document.getElementById("sidebar").style.width = "0";
+    }
+
+    document.getElementById("reviewBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      alert("Redirecting to Review Portal...");
+    });
+  </script>
+
+</body>
+</html>
