@@ -1,53 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Create Account</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | A.T.P Campus Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --deep-blue: #1e3a8a;
+      --soft-blue: #f0f7ff;
+      --border-blue: #d1e2f8;
+      --white: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 50, 150, 0.08);
+      width: 100%;
+      max-width: 440px;
+      padding: 3rem 2.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .brand-logo {
+      text-align: center;
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+    }
+
+    .brand-logo span {
+      color: var(--primary-blue);
+    }
+
+    .subhead {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-blue);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3.2rem;
+      border: 2px solid var(--soft-blue);
+      border-radius: 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      background-color: var(--soft-blue);
+      transition: all 0.3s ease;
+      outline: none;
+      color: var(--text-main);
+      appearance: none;
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary-blue);
+      background-color: var(--white);
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.08);
+    }
+
+    select {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%232563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 1.2rem center;
+      background-size: 1.1rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--primary-blue);
+      border: none;
+      border-radius: 16px;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--deep-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.3);
+    }
+
+    .forgot-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .forgot-link a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+
+    .forgot-link a:hover {
+      opacity: 0.7;
+    }
+
+    .reset-container {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: #f8fafc;
+      border-radius: 20px;
+      border: 1px solid var(--border-blue);
+      display: none;
+      animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .reset-container h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--deep-blue);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reset-input {
+      padding-left: 1.2rem !important;
+      margin-bottom: 1rem;
+      background: var(--white);
+      border: 2px solid var(--border-blue);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--white);
+      border: 2px solid var(--primary-blue);
+      border-radius: 12px;
+      color: var(--primary-blue);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-blue);
+      color: var(--white);
+    }
+
+    .message {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 1.2rem;
+      font-weight: 500;
+    }
+
+    .green { color: #059669; }
+    .red { color: #dc2626; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
+  <div class="card">
+    <div class="brand-logo">A.T.P <span>Campus Hub</span></div>
+    <div class="subhead">Create your secure student account</div>
 
-<form onsubmit="register(event)">
-  <input id="email" placeholder="Email" required>
-  <input id="password" type="password" placeholder="Password" required>
+    <form onsubmit="register(event)">
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="Institutional Email" required>
+      </div>
 
-  <select id="role">
-    <option value="student">Student</option>
-    <option value="admin">Institution</option>
-  </select>
+      <div class="input-group">
+        <i class="fas fa-shield-alt"></i>
+        <input type="password" id="password" placeholder="Choose Password" required>
+      </div>
 
-  <button>Create Account</button>
-  <p id="msg"></p>
-</form>
+      <div class="input-group">
+        <i class="fas fa-user-circle"></i>
+        <select id="role">
+          <option value="student">Student Account</option>
+          <option value="admin">Institutional Admin</option>
+        </select>
+      </div>
 
-<script type="module">
-import {
-  auth,
-  db,
-  createUserWithEmailAndPassword,
-  doc,
-  setDoc
-} from "./firebase.js";
+      <button type="submit" class="btn-primary">Get Started</button>
+      <p id="msg" class="message"></p>
 
-window.register = async e => {
-  e.preventDefault();
-  try {
-    const userCred = await createUserWithEmailAndPassword(
+      <div class="forgot-link">
+        <a onclick="toggleReset()">
+          <i class="fas fa-unlock-alt"></i> Forgot password?
+        </a>
+      </div>
+
+      <div id="resetContainer" class="reset-container">
+        <h4><i class="fas fa-paper-plane"></i> Recover Password</h4>
+        <input type="email" id="resetEmail" class="reset-input" placeholder="Enter recovery email" required>
+        <button type="button" class="btn-secondary" onclick="sendResetEmail()">Send Reset Link</button>
+        <p id="resetMsg" class="message"></p>
+      </div>
+    </form>
+  </div>
+
+  <script type="module">
+    import {
       auth,
-      email.value,
-      password.value
-    );
+      db,
+      createUserWithEmailAndPassword,
+      sendPasswordResetEmail,
+      doc,
+      setDoc
+    } from "./firebase.js";
 
-    await setDoc(doc(db, "users", userCred.user.uid), {
-      role: role.value
-    });
+    window.toggleReset = () => {
+      const container = document.getElementById('resetContainer');
+      container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
+    };
 
-    msg.innerText = "Account created!";
-    msg.style.color = "green";
-  } catch (err) {
-    msg.innerText = err.message;
-    msg.style.color = "red";
-  }
-};
-</script>
+    window.sendResetEmail = async () => {
+      const email = document.getElementById('resetEmail').value.trim();
+      const resetMsg = document.getElementById('resetMsg');
+      if (!email) {
+        resetMsg.innerText = 'Email is required.';
+        resetMsg.className = 'message red';
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        resetMsg.innerText = '✔ Reset link sent! Check your inbox.';
+        resetMsg.className = 'message green';
+        document.getElementById('resetEmail').value = '';
+      } catch (error) {
+        resetMsg.innerText = error.message;
+        resetMsg.className = 'message red';
+      }
+    };
+
+    window.register = async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('msg');
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
+
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, "users", userCred.user.uid), { role });
+        msg.innerText = "✔ Account created! Welcome aboard.";
+        msg.className = 'message green';
+      } catch (err) {
+        msg.innerText = err.message;
+        msg.className = 'message red';
+      }
+    };
+  </script>
 </body>
 </html>
