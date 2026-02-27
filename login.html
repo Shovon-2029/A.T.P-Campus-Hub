@@ -219,7 +219,7 @@
                     </div>
                 </div>
 
-                <button class="btn-google" id="googleLoginBtn">
+                <button type="button" class="btn-google" id="googleLoginBtn">
                     <img src="https://www.svgrepo.com/show/355037/google.svg" width="20" alt="Google">
                     <span id="googleBtnText">Continue with Google</span>
                 </button>
@@ -248,36 +248,66 @@
         }
 
         // --- 4. Form Submission & Redirection Logic ---
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
+            const statusMsg = document.getElementById("statusMsg");
+            const email = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
             
             // Show loading state
             btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Validating...';
+            btn.disabled = true;
+            statusMsg.classList.add("hidden");
             
-            // Simulate authentication delay, then redirect based on role
-            setTimeout(() => {
-                if (currentRole === "student") {
-                    window.location.assign('student.html');
-                } else if (currentRole === "admin") {
-                    window.location.assign('institute.html'); // Change this to your actual institute dashboard page
+            try {
+                const response = await fetch('http://127.0.0.1:5002/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role: currentRole })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusMsg.innerText = "Success! Redirecting...";
+                    statusMsg.className = "mt-4 text-center text-sm font-bold text-green-600 block";
+                    
+                    // Bulletproof redirect based on role
+                    setTimeout(() => {
+                        if (currentRole === "student") {
+                            window.location.href = 'student.html';
+                        } else if (currentRole === "admin") {
+                            window.location.href = 'institute.html'; 
+                        }
+                    }, 800);
+                } else {
+                    // Show error message
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    statusMsg.innerText = data.error;
+                    statusMsg.className = "mt-4 text-center text-sm font-bold text-red-600 block";
                 }
-            }, 800);
+            } catch (err) {
+                console.error(err);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                statusMsg.innerText = "Server error. Is the backend running on port 5002?";
+                statusMsg.className = "mt-4 text-center text-sm font-bold text-red-600 block";
+            }
         }
 
         // --- 5. Google OAuth Setup ---
-        const CLIENT_ID = '1027202675528-dq0u7ce0cpa851bm30op28dlvbmgk860.apps.googleusercontent.com'; // Replace with your actual Client ID
+        const CLIENT_ID = '1027202675528-dq0u7ce0cpa851bm30op28dlvbmgk860.apps.googleusercontent.com'; // Add your ID here when ready
         let tokenClient;
 
         window.onload = function() {
-            // Initialize Lucide Icons if used
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
 
-            // Initialize Google OAuth Token Client
             if(window.google) {
                 tokenClient = google.accounts.oauth2.initTokenClient({
                     client_id: CLIENT_ID,
@@ -292,7 +322,6 @@
                 console.warn("Google Identity Services script not loaded.");
             }
 
-            // Attach Event Listeners
             const form = document.getElementById("loginForm");
             if(form) form.addEventListener("submit", handleLogin);
 
@@ -318,11 +347,10 @@
                 
                 alert(`Welcome, ${user.name}!`);
                 
-                // Redirect Google Login based on the selected role too
                 if (currentRole === "student") {
-                    window.location.assign('student.html');
+                    window.location.href = 'student.html';
                 } else {
-                    window.location.assign('institute.html');
+                    window.location.href = 'institute.html';
                 }
             } catch (e) {
                 console.error(e);

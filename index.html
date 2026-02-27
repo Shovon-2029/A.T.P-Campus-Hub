@@ -12,12 +12,12 @@
     <style>
         :root {
             --primary: #0066FF;
-            --primary-dark: #004ad9;
+            --primary-dark: #0053f9;
             --bg: #f8fafc;
-            --text: #0f172a;
-            --text-secondary: #475569;
-            --border: #e2e8f0;
-            --shadow-blue: 0 20px 40px rgba(0, 102, 255, 0.12);
+            --text: #000000;
+            --text-secondary: #f9f9f9;
+            --border: #ffffff;
+            --shadow-blue: 0 20px 40px rgba(0, 0, 0, 0.12);
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -26,7 +26,7 @@
 
         /* --- PRELOADER --- */
         #preloader {
-            position: fixed; inset: 0; background: #ffffff;
+            position: fixed; inset: 0; background: #ebeced;
             display: flex; justify-content: center; align-items: center;
             z-index: 9999; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
@@ -44,7 +44,7 @@
         nav {
             position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between;
             align-items: center; padding: 15px 6%; backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid var(--border); z-index: 1000;
+            background: rgba(201, 226, 255, 0.8); border-bottom: 1px solid var(--border); z-index: 1000;
         }
         .logo { font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
         .logo-icon { width: 35px; height: 35px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
@@ -68,13 +68,13 @@
 
         /* --- UI CARDS --- */
         .feature-card {
-            background: white; padding: 40px; border-radius: 24px;
+            background: rgb(253, 253, 253); padding: 40px; border-radius: 24px;
             border: 1px solid var(--border); transition: var(--transition);
         }
         .feature-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: var(--shadow-blue); }
         
         .icon-box { 
-            width: 50px; height: 50px; background: #eff6ff; color: var(--primary);
+            width: 50px; height: 50px; background: #ffffff; color: var(--primary);
             display: flex; align-items: center; justify-content: center;
             border-radius: 12px; font-size: 1.25rem; margin-bottom: 20px;
         }
@@ -92,16 +92,18 @@
             .hero-video-box { order: -1; }
         }
     </style>
+    <body style="background: url('background.jpeg') center/cover fixed no-repeat;"></body>
 </head>
 <body>
 
     <div id="preloader">
+        <div class="logo-icon"><i class="fas fa-shield-alt"></i></div> 
         <div class="loader-logo">A.T.P <span class="text-blue-600">Campus Hub</span></div>
     </div>
 
     <nav>
         <a href="#" class="logo">
-           
+           <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
             <span>A.T.P <span class="text-blue-600">Campus Hub</span></span>
         </a>
         <div class="hidden md:flex items-center space-x-8 font-semibold">
@@ -181,7 +183,7 @@
                 <span class="text-blue-600 font-bold tracking-widest uppercase text-xs">Algorithm Avengers</span>
                 <h2 class="text-4xl font-extrabold mt-4 mb-6">Our Mission</h2>
                 <p class="text-lg text-slate-600 mb-8 leading-relaxed">
-                    We believe campus safety is a right, not a privilege. A.T.P Hub bridges the communication gap between management and students through transparent, secure technology.
+                    We believe campus safety is a right, not a privilege. A.T.P Campus Hub bridges the communication gap between management and students through transparent, secure technology.
                 </p>
                 <div class="space-y-4">
                     <div class="flex items-center gap-4 font-bold text-slate-700">
@@ -209,10 +211,52 @@
         </div>
     </section>
 
-    <footer class="py-12 text-center border-t border-slate-200">
-        <p class="font-bold text-slate-400 text-sm">© 2026 ALGORITHM AVENGERS</p>
-        <p class="text-slate-300 text-xs mt-2 uppercase tracking-widest">Securing the Student Voice</p>
-    </footer>
+    <footer class="bg-white pt-16 pb-8 px-[6%] border-t border-slate-100">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1 md:col-span-1">
+            <div class="logo mb-6">
+                <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+                <span class="font-extrabold text-xl">A.T.P <span class="text-blue-600">Campus Hub</span></span>
+            </div>
+            <p class="text-slate-500 text-sm leading-relaxed">
+                Empowering students with secure, anonymous reporting to build a safer campus environment.
+            </p>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-slate-800">Resources</h4>
+            <ul class="space-y-4 text-sm text-slate-500">
+                <li><a href="#" class="hover:text-blue-600 transition">Privacy Policy</a></li>
+                <li><a href="#" class="hover:text-blue-600 transition">Terms of Service</a></li>
+                <li><a href="#" class="hover:text-blue-600 transition">Security Protocol</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-slate-800">Support</h4>
+            <ul class="space-y-4 text-sm text-slate-500">
+                <li><a href="#faq" class="hover:text-blue-600 transition">Help Center</a></li>
+                <li><a href="#" class="hover:text-blue-600 transition">Report an Issue</a></li>
+                <li><a href="mailto:support@atp.edu" class="hover:text-blue-600 transition">Contact Admin</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-6 text-slate-800">Connect</h4>
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white transition"><i class="fab fa-github"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white transition"><i class="fab fa-x"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pt-8 border-t border-slate-100 text-center">
+        <p class="font-bold text-slate-400 text-xs uppercase tracking-widest">
+            © 2026 ALGORITHM AVENGERS • Securing the Student Voice
+        </p>
+    </div>
+</footer>
 
     <script>
         window.onload = () => {

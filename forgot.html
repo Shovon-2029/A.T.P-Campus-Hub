@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #2563eb; /* Royal Blue */
-            --accent-blue: #60a5fa;  /* Light Blue */
-            --bg-light: #f8fafc;    /* Off-white */
+            --primary-blue: #2563eb; 
+            --accent-blue: #60a5fa;  
+            --bg-light: #f8fafc;    
             --text-dark: #1e293b;
             --white: #ffffff;
         }
@@ -144,7 +144,6 @@
             opacity: 0.8;
         }
 
-        /* Success Animation */
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -158,8 +157,8 @@
 
 <div class="container">
     <div class="logo">A.T.P <span>Campus Hub</span></div>
-    <h2>Forgot Password?</h2>
-    <p class="subtitle">Enter the email associated with your account and we'll send a recovery link.</p>
+    <h2>Recover Access</h2>
+    <p class="subtitle">Enter your registered email ID to generate a temporary password for your account.</p>
 
     <form onsubmit="resetPass(event)">
         <div class="input-group">
@@ -167,19 +166,18 @@
             <input type="email" id="email" placeholder="name@college.edu" required>
         </div>
         
-        <button id="submitBtn">Send Reset Instructions</button>
+        <button type="submit" id="submitBtn">Generate Temporary Password</button>
         <p id="msg"></p>
     </form>
 
     <a href="login.html" class="back-link">Back to Sign In</a>
 </div>
 
-<script type="module">
-    import { auth, sendPasswordResetEmail } from "./firebase.js";
-
+<script>
     window.resetPass = async e => {
         e.preventDefault();
-        const emailInput = document.getElementById('email');
+        
+        const emailInput = document.getElementById('email').value;
         const msg = document.getElementById('msg');
         const btn = document.getElementById('submitBtn');
 
@@ -187,29 +185,41 @@
         btn.innerText = "Processing...";
         btn.disabled = true;
         msg.innerText = "";
+        msg.classList.remove('message-animate');
 
         try {
-            await sendPasswordResetEmail(auth, emailInput.value);
-            
-            // Success State
-            msg.innerText = "✔ Instructions sent to your email.";
-            msg.style.color = "#059669"; // Emerald Green
-            msg.classList.add('message-animate');
-            btn.innerText = "Check Inbox";
-            btn.style.background = "#059669";
+            const response = await fetch('http://127.0.0.1:5002/api/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailInput })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Success popup showing the temporary password
+                alert("✔ Password Reset Successful!\n\nYour new temporary password is:\n" + data.temp_password + "\n\nPlease copy this down. Click OK to return to the login screen.");
+                
+                // Redirect immediately after user clicks OK
+                window.location.replace("login.html");
+                
+            } else {
+                // Display error (e.g., Email not found)
+                btn.disabled = false;
+                btn.innerText = "Generate Temporary Password";
+                msg.innerText = data.error || "Something went wrong.";
+                msg.style.color = "#dc2626"; // Red
+                msg.classList.add('message-animate');
+            }
             
         } catch (err) {
-            // Error Handling
+            // Network/Server Error Handling
+            console.error(err);
             btn.disabled = false;
-            btn.innerText = "Send Reset Instructions";
-            msg.classList.add('message-animate');
+            btn.innerText = "Generate Temporary Password";
+            msg.innerText = "Cannot connect to server. Is Python running on port 5002?";
             msg.style.color = "#dc2626"; // Red
-            
-            if(err.code === 'auth/user-not-found') {
-                msg.innerText = "No account found with this email.";
-            } else {
-                msg.innerText = "Something went wrong. Please try again.";
-            }
+            msg.classList.add('message-animate');
         }
     };
 </script>

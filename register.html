@@ -200,10 +200,10 @@
       font-size: 0.9rem;
       margin-top: 1.2rem;
       font-weight: 500;
+      height: 20px;
     }
 
-    .green { color: #059669; }
-    .red { color: #dc2626; }
+    .blue { color: #2563eb; }
 
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-15px); }
@@ -235,7 +235,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn-primary">Get Started</button>
+      <button type="submit" class="btn-primary" id="submitBtn">Get Started</button>
       <p id="msg" class="message"></p>
 
       <div class="forgot-link">
@@ -246,62 +246,95 @@
 
       <div id="resetContainer" class="reset-container">
         <h4><i class="fas fa-paper-plane"></i> Recover Password</h4>
-        <input type="email" id="resetEmail" class="reset-input" placeholder="Enter recovery email" required>
+        <input type="email" id="resetEmail" class="reset-input" placeholder="Enter recovery email">
         <button type="button" class="btn-secondary" onclick="sendResetEmail()">Send Reset Link</button>
         <p id="resetMsg" class="message"></p>
       </div>
     </form>
   </div>
 
-  <script type="module">
-    import {
-      auth,
-      db,
-      createUserWithEmailAndPassword,
-      sendPasswordResetEmail,
-      doc,
-      setDoc
-    } from "./firebase.js";
-
+  <script>
+    // --- UI Toggle Function ---
     window.toggleReset = () => {
       const container = document.getElementById('resetContainer');
       container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
     };
 
+    // --- Forgot Password Logic ---
     window.sendResetEmail = async () => {
-      const email = document.getElementById('resetEmail').value.trim();
-      const resetMsg = document.getElementById('resetMsg');
-      if (!email) {
-        resetMsg.innerText = 'Email is required.';
-        resetMsg.className = 'message red';
+      const resetEmail = document.getElementById('resetEmail').value.trim();
+      
+      if (!resetEmail) {
+        alert("❌ Please enter your email address to recover your password.");
         return;
       }
+
       try {
-        await sendPasswordResetEmail(auth, email);
-        resetMsg.innerText = '✔ Reset link sent! Check your inbox.';
-        resetMsg.className = 'message green';
-        document.getElementById('resetEmail').value = '';
-      } catch (error) {
-        resetMsg.innerText = error.message;
-        resetMsg.className = 'message red';
+        const response = await fetch('http://127.0.0.1:5002/api/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: resetEmail })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("✔ Account found!\n\nYour new temporary password is:\n" + data.temp_password + "\n\nPlease copy this down and use it to log in.");
+          document.getElementById('resetEmail').value = '';
+          toggleReset();
+        } else {
+          alert("❌ " + (data.error || "No account found with this email."));
+        }
+      } catch (err) {
+        console.error(err);
+        alert("❌ Error connecting to server.\nMake sure your Python backend is running on port 5002.");
       }
     };
 
+    // --- Registration Logic ---
     window.register = async (e) => {
-      e.preventDefault();
+      e.preventDefault(); 
+      
       const msg = document.getElementById('msg');
+      const submitBtn = document.getElementById('submitBtn');
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const role = document.getElementById('role').value;
 
+      msg.innerText = "Creating account...";
+      msg.className = 'message blue';
+      submitBtn.disabled = true;
+
       try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        await setDoc(doc(db, "users", userCred.user.uid), { role });
-        msg.innerText = "✔ Account created! Welcome aboard.";
-        msg.className = 'message green';
+        const response = await fetch('http://127.0.0.1:5002/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          msg.innerText = ""; 
+          
+          // 1. Show the alert and pause
+          alert("✔ Successfully registered!\nClick OK to go to the login page.");
+          
+          // 2. The Timeout Fix: Wait 100ms after OK is clicked, then force redirect
+          setTimeout(() => {
+              window.location.href = "login.html";
+          }, 100);
+          
+        } else {
+          msg.innerText = "";
+          alert("❌ Registration failed: " + (data.error || "Unknown error") + "\n\nPlease try again.");
+          submitBtn.disabled = false;
+        }
       } catch (err) {
-        msg.innerText = err.message;
-        msg.className = 'message red';
+        console.error(err);
+        msg.innerText = "";
+        alert("❌ Error connecting to server.\nMake sure your Python backend is running on port 5002.\n\nPlease try again.");
+        submitBtn.disabled = false;
       }
     };
   </script>

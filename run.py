@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 # List of your scripts
-scripts = ["server.py", "chat_ai.py", "complaint.py"]
+scripts = ["server.py", "chat_ai.py", "complaint.py", "register.py"]
 processes = []
 
 print("Starting all services...")
