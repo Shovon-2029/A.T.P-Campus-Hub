@@ -13,6 +13,7 @@
             --primary: #0066FF;
             --primary-soft: rgba(0, 102, 255, 0.08);
             --accent-red: #ff3b3b;
+            --success: #10b981;
             --bg: #f8fafc;
             --card: #ffffff;
             --text-main: #0f172a;
@@ -21,7 +22,7 @@
             --radius-xl: 28px;
             --radius-lg: 18px;
             --shadow: 0 10px 30px -10px rgba(0, 102, 255, 0.1);
-            --transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            --transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,16 +54,14 @@
         .brand span { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 
         nav ul { display: flex; list-style: none; background: #f1f5f9; padding: 4px; border-radius: 100px; }
-        
         nav a {
             text-decoration: none; color: var(--text-muted); font-weight: 700; font-size: 0.8rem;
             padding: 8px 20px; border-radius: 100px; transition: var(--transition);
         }
-
         nav a.active { background: var(--card); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
         .main-wrapper { max-width: 700px; margin: 40px auto; flex: 1; width: 95%; overflow: hidden; }
-        .sections-container { display: flex; width: 200%; transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
+        .sections-container { display: flex; width: 200%; transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
         section { width: 50%; padding: 0 10px; }
         .show-track .sections-container { transform: translateX(-50%); }
 
@@ -80,7 +79,7 @@
 
         .form-group label {
             display: block; font-weight: 700; font-size: 0.8rem; margin-bottom: 8px;
-            color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--text-main); text-transform: uppercase;
         }
 
         input, select, textarea {
@@ -100,42 +99,46 @@
             align-items: center; justify-content: center; gap: 10px; transition: var(--transition);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             filter: brightness(1.1); transform: translateY(-2px);
             box-shadow: 0 10px 20px -5px rgba(0, 102, 255, 0.4);
         }
 
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
         .file-box {
             border: 2px dashed var(--border); padding: 15px; border-radius: var(--radius-lg);
-            text-align: center; transition: var(--transition);
+            text-align: center; transition: var(--transition); position: relative;
         }
         .file-box:hover { border-color: var(--primary); background: var(--primary-soft); }
 
+        /* Modal Styles */
         .modal {
-            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(6px); z-index: 2000; align-items: center; justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center;
         }
 
         .modal-content {
-            background: white; padding: 40px; border-radius: 35px; max-width: 400px;
-            width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            background: white; padding: 40px; border-radius: 35px; max-width: 420px;
+            width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3);
             animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
         .token-display {
-            background: var(--primary-soft); border: 2px solid var(--primary); padding: 15px;
-            border-radius: var(--radius-lg); font-size: 1.4rem; font-weight: 800;
+            background: var(--primary-soft); border: 2px dashed var(--primary); padding: 20px;
+            border-radius: var(--radius-lg); font-size: 1.6rem; font-weight: 800;
             color: var(--primary); margin: 20px 0; letter-spacing: 2px;
         }
 
         footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.85rem; }
 
         @media (max-width: 650px) {
-            .grid { grid-template-columns: 1fr; } .full { grid-column: span 1; }
             header { flex-direction: column; padding: 1.5rem; gap: 15px; }
             .form-card { padding: 30px 20px; }
+            .grid { grid-template-columns: 1fr; }
+            .full { grid-column: span 1; }
         }
     </style>
 </head>
@@ -145,7 +148,7 @@
         <div class="brand">
             <a href="#" onclick="setView('reg'); return false;" style="text-decoration:none;">
                 <h2>A.T.P Campus Hub</h2>
-                <span>🔒 Secure & Anonymous</span>
+                <span>🔒 End-to-End Encrypted</span>
             </a>
         </div>
         <nav>
@@ -163,9 +166,9 @@
                 <div class="form-card">
                     <div class="section-header">
                         <h3>Lodge Grievance</h3>
-                        <p>Your identity is protected by end-to-end encryption.</p>
+                        <p>Your identity remains 100% anonymous.</p>
                     </div>
-                    <form id="gForm" onsubmit="event.preventDefault();">
+                    <form id="gForm">
                         <div class="grid">
                             <div class="form-group full">
                                 <label>Category</label>
@@ -184,16 +187,16 @@
                             </div>
                             <div class="form-group full">
                                 <label>Description</label>
-                                <textarea id="desc" rows="3" placeholder="Explain what happened..." required></textarea>
+                                <textarea id="desc" rows="4" placeholder="Describe the incident in detail..." required></textarea>
                             </div>
                             <div class="form-group full">
-                                <label>Evidence (Max 10MB)</label>
+                                <label>Evidence (Optional)</label>
                                 <div class="file-box">
-                                    <input type="file" id="evid" accept="image/*,.pdf" style="border:none; background:transparent; padding:1;">
+                                    <input type="file" id="evid" accept="image/*,.pdf">
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn-primary" onclick="submitGrievance()">
+                        <button type="submit" class="btn-primary" id="submitBtn">
                             <i class="fas fa-paper-plane"></i> SUBMIT REPORT
                         </button>
                     </form>
@@ -203,21 +206,22 @@
             <section>
                 <div class="form-card">
                     <div class="section-header">
-                        <h3>Track Status</h3>
-                        <p>Check the resolution progress of your case.</p>
+                        <h3>Track Progress</h3>
+                        <p>Enter your unique ID to see the resolution status.</p>
                     </div>
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Enter Grievance ID</label>
+                        <label>Grievance ID</label>
                         <input type="text" id="trkIn" placeholder="CW-2026-XXXX">
                     </div>
-                    <button type="button" class="btn-primary" onclick="doTrack()">
+                    <button type="button" class="btn-primary" onclick="doTrack(event)">
                         <i class="fas fa-search"></i> VIEW UPDATES
                     </button>
 
-                    <div id="res" style="display:none; margin-top:25px; padding: 20px; background: #f1f5f9; border-radius: 18px; border-left: 5px solid var(--primary);">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">Current Phase</span>
-                        <p style="font-weight: 700; font-size: 1.1rem; margin-top: 5px;" id="trkStatus">Investigation in Progress</p>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;"><i class="fas fa-history"></i> Last updated: just now</p>
+                    <div id="res" style="display:none; margin-top:25px; padding: 25px; background: #f8fafc; border-radius: 18px; border: 1px solid var(--border); border-left: 5px solid var(--primary);">
+                        <span style="font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">Current Status</span>
+                        <p style="font-weight: 800; font-size: 1.2rem; margin-top: 5px; color: var(--text-main);" id="trkStatus">Investigation in Progress</p>
+                        <div style="height: 1px; background: var(--border); margin: 15px 0;"></div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);"><i class="fas fa-clock"></i> Last updated: Just now</p>
                     </div>
                 </div>
             </section>
@@ -227,19 +231,22 @@
 
     <div class="modal" id="mod">
         <div class="modal-content">
-            <div style="font-size: 3rem; color: #10b981; margin-bottom: 15px;"><i class="fas fa-check-circle"></i></div>
-            <h3 style="font-size: 1.4rem;">Report Received</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">Save this ID to track your complaint. It won't be shown again.</p>
-            <div class="token-display" id="genId">CW-2026-4492</div>
-            <button type="button" class="btn-primary" id="copyBtn" onclick="copyAndClose()">COPY & CLOSE</button>
+            <div style="font-size: 3.5rem; color: var(--success); margin-bottom: 15px;"><i class="fas fa-check-circle"></i></div>
+            <h3 style="font-size: 1.6rem; font-weight: 800;">Report Filed!</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px; line-height: 1.5;">Your report has been encrypted. **Save this ID** to track progress. We cannot recover it for you.</p>
+            <div class="token-display" id="genId">CW-2026-0000</div>
+            <button type="button" class="btn-primary" id="copyBtn" onclick="copyAndClose()">
+                <i class="fas fa-copy"></i> COPY & CLOSE
+            </button>
         </div>
     </div>
 
     <footer>
-        <p>© 2026 Algorithm Avengers · Protecting Student Interests</p>
+        <p>© 2026 Algorithm Avengers · Developed for Secure Campus Communication</p>
     </footer>
 
     <script>
+        // 1. Navigation Controller
         function setView(v) {
             const w = document.getElementById('wrapper');
             const tr = document.getElementById('tabReg');
@@ -249,147 +256,70 @@
                 tt.classList.add('active');
                 tr.classList.remove('active');
             } else {
-                w.classList.remove('show-track');function submitGrievance(event) {
-    // 1. STRONGLY prevent the page from reloading
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    const cat = document.getElementById('cat').value;
-    const date = document.getElementById('inc_date').value;
-    const desc = document.getElementById('desc').value;
-
-    // 2. Your validation logic is fine, let's just make it cleaner
-    if (!cat || !date || !desc) {
-        alert("Please fill in all required fields.");
-        return false;
-    }
-
-    const formData = new FormData();
-    formData.append('category', cat);
-    formData.append('incident_date', date);
-    formData.append('description', desc);
-
-    const fileInput = document.getElementById('evid');
-    if (fileInput.files.length > 0) {
-        formData.append('evidence', fileInput.files[0]);
-    }
-
-    // 3. Visual Feedback: Change button text so user knows it's working
-    const btn = event.target.closest('button');
-    const originalBtnText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SUBMITTING...';
-    btn.disabled = true;
-
-    fetch('http://127.0.0.1:9000/api/complaints', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => {
-        if(!res.ok) throw new Error("Server error");
-        return res.json();
-    })
-    .then(data => {
-        // Show the modal with the ID
-        document.getElementById('genId').innerText = data.tracking_id;
-        document.getElementById('mod').style.display = 'flex';
-    })
-    .catch(err => {
-        alert("Error: Make sure your Python server is running on port 9000.");
-    })
-    .finally(() => {
-        // Reset button state
-        btn.innerHTML = originalBtnText;
-        btn.disabled = false;
-    });
-}
+                w.classList.remove('show-track');
                 tr.classList.add('active');
                 tt.classList.remove('active');
             }
         }
 
-        // 1. Submit Complaint
-        function submitGrievance() {
-            const form = document.getElementById('gForm');
+        // 2. Submit Logic with FIXED event prevention
+        document.getElementById('gForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // CRITICAL: Stop the page reload
             
-            if (!document.getElementById('cat').value || !document.getElementById('inc_date').value || !document.getElementById('desc').value) {
-                alert("Please fill in all required fields (Category, Date, Description).");
-                
-                return;
-            }
+            const btn = document.getElementById('submitBtn');
+            const cat = document.getElementById('cat').value;
+            const date = document.getElementById('inc_date').value;
+            const desc = document.getElementById('desc').value;
 
+            // Prepare Data
             const formData = new FormData();
-            formData.append('category', document.getElementById('cat').value);
-            formData.append('incident_date', document.getElementById('inc_date').value);
-            formData.append('description', document.getElementById('desc').value);
+            formData.append('category', cat);
+            formData.append('incident_date', date);
+            formData.append('description', desc);
 
             const fileInput = document.getElementById('evid');
             if (fileInput.files.length > 0) {
                 formData.append('evidence', fileInput.files[0]);
             }
 
+            // Visual State
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENCRYPTING...';
+
             fetch('http://127.0.0.1:9000/api/complaints', {
                 method: 'POST',
                 body: formData
             })
             .then(res => {
-                if(!res.ok) throw new Error("Server error");
+                if(!res.ok) throw new Error("Server Error");
                 return res.json();
             })
             .then(data => {
+                // Show modal
                 document.getElementById('genId').innerText = data.tracking_id;
                 document.getElementById('mod').style.display = 'flex';
             })
             .catch(err => {
-                alert("Error submitting complaint. Make sure the Python server is running.");
+                alert("Submission failed. Ensure Python server is running on port 9000.");
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> SUBMIT REPORT';
             });
-        }
+        });
 
-        // 2. Copy ID and Close Modal
-        function copyAndClose() {
-            const trackingId = document.getElementById('genId').innerText;
-            const btn = document.getElementById('copyBtn');
-            
-            // Try to copy to clipboard
-            navigator.clipboard.writeText(trackingId).then(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
-                btn.style.background = '#10b981';
-                
-                // Close after a brief delay
-                setTimeout(() => {
-                    closeModal();
-                }, 1000);
-            }).catch(err => {
-                // If clipboard fails, just close
-                alert("Please highlight the ID and copy it manually, then click okay.");
-                closeModal();
-            });
-        }
-
-        // Helper to reset and close
-        function closeModal() {
-            document.getElementById('mod').style.display = 'none';
-            document.getElementById('gForm').reset();
-            
-            const btn = document.getElementById('copyBtn');
-            btn.innerHTML = 'COPY & CLOSE';
-            btn.style.background = 'var(--primary)';
-            
-            setView('reg');
-        }
-
-        // 3. Track Complaint
-        function doTrack() {
-            const trkId = document.getElementById('trkIn').value;
+        // 3. Tracking Logic
+        function doTrack(e) {
+            if(e) e.preventDefault();
+            const trkId = document.getElementById('trkIn').value.trim();
             if(!trkId) {
-                alert("Please enter a valid ID");
+                alert("Please enter your Tracking ID");
                 return;
             }
 
             fetch(`http://127.0.0.1:9000/api/complaints/${trkId}`)
             .then(res => {
-                if (!res.ok) throw new Error("ID not found");
+                if (!res.ok) throw new Error("Not Found");
                 return res.json();
             })
             .then(data => {
@@ -397,8 +327,28 @@
                 document.getElementById('trkStatus').innerText = data.status || "Investigation in Progress";
             })
             .catch(err => {
-                alert("Grievance ID not found. Please check and try again.");
+                alert("ID not found. Please check and try again.");
                 document.getElementById('res').style.display = 'none';
+            });
+        }
+
+        // 4. Clipboard Logic
+        function copyAndClose() {
+            const id = document.getElementById('genId').innerText;
+            const btn = document.getElementById('copyBtn');
+            
+            navigator.clipboard.writeText(id).then(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> COPIED TO CLIPBOARD';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    document.getElementById('mod').style.display = 'none';
+                    document.getElementById('gForm').reset();
+                    // Reset button for next time
+                    btn.innerHTML = '<i class="fas fa-copy"></i> COPY & CLOSE';
+                    btn.style.background = 'var(--primary)';
+                    setView('reg');
+                }, 1200);
             });
         }
     </script>
